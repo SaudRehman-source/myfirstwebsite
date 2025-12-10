@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Saud Rehman | SaudAI Portfolio</title>
@@ -484,7 +484,7 @@
       color: var(--text);
     }
 
-    /* Generic cards / grids */
+    /* Generic grids / cards */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -561,6 +561,28 @@
 
     body[data-theme="light"] .pill {
       background: rgba(255, 255, 255, 0.95);
+    }
+
+    /* Section panel (for Experience cards background alignment) */
+    .section-panel {
+      position: relative;
+      border-radius: 32px;
+      padding: 2.2rem 2.1rem;
+      margin-top: 1rem;
+      background: radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.20), transparent 60%),
+                  radial-gradient(circle at 100% 100%, rgba(244, 114, 182, 0.18), transparent 60%),
+                  radial-gradient(circle at 50% 100%, rgba(56, 189, 248, 0.18), transparent 60%),
+                  var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    body[data-theme="light"] .section-panel {
+      background: radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.14), transparent 60%),
+                  radial-gradient(circle at 100% 100%, rgba(244, 114, 182, 0.12), transparent 60%),
+                  radial-gradient(circle at 50% 100%, rgba(56, 189, 248, 0.14), transparent 60%),
+                  #ffffff;
     }
 
     /* SaudAI Chat */
@@ -1029,88 +1051,91 @@
         across energy, IoT and aerospace ecosystems.
       </p>
 
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-title">Technical Marketing Manager</div>
-          <div class="card-meta">NASTP · 2024 – Present</div>
-          <p>
-            Crafting narratives around aerospace & defence technologies, supporting ecosystem growth and
-            engaging stakeholders with clear, technically accurate messaging.
-          </p>
-          <div class="pill-row">
-            <span class="pill">Aerospace</span>
-            <span class="pill">Defence</span>
-            <span class="pill">Marketing</span>
+      <!-- NEW PANEL WRAPPER so background aligns with section -->
+      <div class="section-panel">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">Technical Marketing Manager</div>
+            <div class="card-meta">NASTP · 2024 – Present</div>
+            <p>
+              Crafting narratives around aerospace & defence technologies, supporting ecosystem growth and
+              engaging stakeholders with clear, technically accurate messaging.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Aerospace</span>
+              <span class="pill">Defence</span>
+              <span class="pill">Marketing</span>
+            </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-title">Lead Project Engineer</div>
-          <div class="card-meta">Renergy Solutions · 2024</div>
-          <p>
-            Led multi-megawatt renewable implementations, aligning design, execution and CRM-based workflows
-            for commercial & industrial clients.
-          </p>
-          <div class="pill-row">
-            <span class="pill">Renewables</span>
-            <span class="pill">C&I Solar</span>
-            <span class="pill">Jira & CRM</span>
+          <div class="card">
+            <div class="card-title">Lead Project Engineer</div>
+            <div class="card-meta">Renergy Solutions · 2024</div>
+            <p>
+              Led multi-megawatt renewable implementations, aligning design, execution and CRM-based workflows
+              for commercial & industrial clients.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Renewables</span>
+              <span class="pill">C&I Solar</span>
+              <span class="pill">Jira & CRM</span>
+            </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-title">Product Dev & BDO</div>
-          <div class="card-meta">Rapidev · 2023–2024</div>
-          <p>
-            Combined sales engineering with process optimization using Salesforce and structured BoQs,
-            consistently meeting and exceeding targets.
-          </p>
-          <div class="pill-row">
-            <span class="pill">Sales Engineering</span>
-            <span class="pill">Salesforce</span>
-            <span class="pill">Business Dev</span>
+          <div class="card">
+            <div class="card-title">Product Dev & BDO</div>
+            <div class="card-meta">Rapidev · 2023–2024</div>
+            <p>
+              Combined sales engineering with process optimization using Salesforce and structured BoQs,
+              consistently meeting and exceeding targets.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Sales Engineering</span>
+              <span class="pill">Salesforce</span>
+              <span class="pill">Business Dev</span>
+            </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-title">Product Development Manager</div>
-          <div class="card-meta">Spacedome · 2023</div>
-          <p>
-            Guided AI & IoT product development, defining features, workflows and go-to-market strategies
-            to increase adoption and streamline operations.
-          </p>
-          <div class="pill-row">
-            <span class="pill">IoT</span>
-            <span class="pill">AI</span>
-            <span class="pill">Product Dev</span>
+          <div class="card">
+            <div class="card-title">Product Development Manager</div>
+            <div class="card-meta">Spacedome · 2023</div>
+            <p>
+              Guided AI & IoT product development, defining features, workflows and go-to-market strategies
+              to increase adoption and streamline operations.
+            </p>
+            <div class="pill-row">
+              <span class="pill">IoT</span>
+              <span class="pill">AI</span>
+              <span class="pill">Product Dev</span>
+            </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-title">Assistant Manager (Solar)</div>
-          <div class="card-meta">SkyElectric · 2020–2023</div>
-          <p>
-            Designed and sold tailored solar solutions, using Salesforce, Jira and detailed BoQs to align
-            engineering and commercial requirements.
-          </p>
-          <div class="pill-row">
-            <span class="pill">Solar PV</span>
-            <span class="pill">Technical Sales</span>
-            <span class="pill">Customer Success</span>
+          <div class="card">
+            <div class="card-title">Assistant Manager (Solar)</div>
+            <div class="card-meta">SkyElectric · 2020–2023</div>
+            <p>
+              Designed and sold tailored solar solutions, using Salesforce, Jira and detailed BoQs to align
+              engineering and commercial requirements.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Solar PV</span>
+              <span class="pill">Technical Sales</span>
+              <span class="pill">Customer Success</span>
+            </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-title">Education</div>
-          <div class="card-meta">COMSATS University</div>
-          <p>
-            MEng Renewable Electrical Engineering · BE Electrical & Electronics.
-            Final year project in wind speed forecasting using Bi-LSTM and Bi-GRU.
-          </p>
-          <div class="pill-row">
-            <span class="pill">Renewable Electrical Engineering</span>
-            <span class="pill">Electrical & Electronics</span>
-            <span class="pill">ML for Energy</span>
+          <div class="card">
+            <div class="card-title">Education</div>
+            <div class="card-meta">COMSATS University</div>
+            <p>
+              MEng Renewable Electrical Engineering · BE Electrical & Electronics.
+              Final year project in wind speed forecasting using Bi-LSTM and Bi-GRU.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Renewable Electrical Engineering</span>
+              <span class="pill">Electrical & Electronics</span>
+              <span class="pill">ML for Energy</span>
+            </div>
           </div>
         </div>
       </div>
