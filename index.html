@@ -1,451 +1,1453 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <title>Saud Rehman | SaudAI Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     :root {
+      --transition-speed: 0.25s;
+      --radius-lg: 20px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.75);
+    }
+
+    /* DARK THEME (default) */
+    body[data-theme="dark"] {
       --bg: #020617;
-      --bg-alt: #050816;
-      --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.18);
-      --accent2: #a855f7;
+      --bg-alt: #050819;
+      --bg-elevated: rgba(15, 23, 42, 0.9);
+      --border-subtle: rgba(148, 163, 184, 0.3);
       --text: #e5e7eb;
       --muted: #9ca3af;
-      --card-bg: rgba(15, 23, 42, 0.8);
-      --border: rgba(148, 163, 184, 0.3);
-      --radius-xl: 18px;
-      --radius-2xl: 26px;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
-      --nav-h: 70px;
+      --accent: #38bdf8;
+      --accent-2: #a855f7;
+      --accent-3: #22c55e;
+      --card-glow-1: rgba(56, 189, 248, 0.25);
+      --card-glow-2: rgba(168, 85, 247, 0.25);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* LIGHT THEME */
+    body[data-theme="light"] {
+      --bg: #f9fafb;
+      --bg-alt: #edf2ff;
+      --bg-elevated: #ffffff;
+      --border-subtle: rgba(148, 163, 184, 0.3);
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent-2: #a855f7;
+      --accent-3: #16a34a;
+      --card-glow-1: rgba(37, 99, 235, 0.18);
+      --card-glow-2: rgba(168, 85, 247, 0.18);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
 
     body {
-      font-family: "Space Grotesk", sans-serif;
-      background: radial-gradient(circle at top, #0f172a 0, #020617 60%, #000 100%);
+      font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.16), transparent 60%),
+        radial-gradient(circle at 100% 0%, rgba(236, 72, 153, 0.18), transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(56, 189, 248, 0.16), transparent 65%),
+        var(--bg);
       color: var(--text);
-      min-height: 100vh;
       scroll-behavior: smooth;
+      transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
     }
 
-    a { color: inherit; text-decoration: none; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
+    /* Decorative starfield layers */
+    .bg-stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      mix-blend-mode: screen;
+      z-index: -1;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.8) 1px, transparent 1px),
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,0.6) 1px, transparent 1px),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.7) 1px, transparent 1px);
+      background-size: 180px 180px, 220px 220px, 260px 260px;
+      animation: drift 40s linear infinite;
+    }
+
+    @keyframes drift {
+      0% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(-30px, 20px, 0); }
+      100% { transform: translate3d(0,0,0); }
+    }
+
+    /* Layout */
     header {
-      position: sticky; top: 0; z-index: 50;
+      position: sticky;
+      top: 0;
+      z-index: 50;
       backdrop-filter: blur(18px);
-      background: rgba(15,23,42,0.8);
-      border-bottom: 1px solid rgba(148,163,184,0.2);
-      height: var(--nav-h);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.92),
+        rgba(15, 23, 42, 0.6)
+      );
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    body[data-theme="light"] header {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.96),
+        rgba(248, 250, 252, 0.9)
+      );
     }
 
     .nav-inner {
-      max-width: 1120px;
+      max-width: 1140px;
       margin: 0 auto;
-      height: 100%;
+      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.25rem;
+      padding: 0 1.4rem;
     }
 
-    nav ul { display: flex; gap: 1rem; list-style: none; font-size: 0.85rem; }
-    nav a { padding: 6px 12px; border-radius: 999px; }
-    nav a:hover { background: rgba(56,189,248,0.1); color: var(--accent); }
-
-    .nav-cta {
-      border: 1px solid rgba(56,189,248,0.6);
-      color: var(--accent);
-      border-radius: 999px;
-      padding: 6px 14px;
-    }
-
-    main { max-width: 1120px; margin: 0 auto; padding: 3rem 1.25rem; }
-
-    section { padding: 4rem 0; }
-
-    /* HERO SECTION */
-    #hero {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 2rem;
+    .logo {
+      display: flex;
       align-items: center;
-      padding-top: 2rem;
+      gap: 0.7rem;
     }
 
-    .hero-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; }
-    .hero-highlight { background: linear-gradient(to right, #38bdf8, #a855f7); -webkit-background-clip: text; color: transparent; }
-
-    .hero-tagline { color: var(--muted); margin-bottom: 1.5rem; max-width: 540px; }
-
-    .btn {
+    .logo-orbit {
+      width: 36px;
+      height: 36px;
       border-radius: 999px;
-      padding: 0.7rem 1.3rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: inline-block;
+      background:
+        conic-gradient(from 220deg, var(--accent), var(--accent-2), var(--accent), var(--accent-3));
+      position: relative;
+      box-shadow: 0 0 22px var(--card-glow-1);
     }
 
-    .btn-primary {
-      background: linear-gradient(to right, #38bdf8, #a855f7);
-      color: white;
+    .logo-orbit::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #0f172a);
+      opacity: 0.9;
     }
 
-    .btn-ghost {
-      background: rgba(15,23,42,0.8);
-      border: 1px solid rgba(148,163,184,0.4);
+    .logo-text-main {
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 0.7rem;
       color: var(--muted);
     }
 
-    /* CARDS */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 1.3rem;
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
-    .card-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; }
-
-    .pill-row { display: flex; gap: 0.35rem; margin-top: 0.5rem; flex-wrap: wrap; }
-    .pill {
-      padding: 0.25rem 0.6rem;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
-      border-radius: 12px;
-      font-size: 0.7rem;
-    }
-
-    /* SAUDAI CHAT */
-    .chat-panel {
-      background: var(--card-bg);
-      padding: 1rem;
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border);
+    nav ul {
       display: flex;
-      flex-direction: column;
-      height: 360px;
+      gap: 1rem;
+      list-style: none;
+      font-size: 0.84rem;
     }
 
-    .chat-body {
-      flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem;
+    nav a {
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: all var(--transition-speed) ease;
     }
 
-    .chat-message {
-      max-width: 80%;
-      padding: 0.6rem 0.8rem;
-      border-radius: 12px;
-      font-size: 0.85rem;
+    nav a:hover {
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.85);
     }
 
-    .chat-message.user { background: rgba(56,189,248,0.25); align-self: flex-end; }
-    .chat-message.assistant { background: rgba(148,163,184,0.1); border: 1px solid rgba(148,163,184,0.3); }
+    body[data-theme="light"] nav a:hover {
+      background: rgba(209, 213, 219, 0.4);
+    }
 
-    .chat-input-bar { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
-    .chat-input-bar input {
-      flex: 1;
-      padding: 0.5rem;
-      background: rgba(15,23,42,0.9);
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.4);
+    .nav-cta {
+      border-color: rgba(56, 189, 248, 0.7);
+      color: var(--accent);
+      box-shadow: 0 0 18px var(--card-glow-1);
+    }
+
+    main {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 2.7rem 1.4rem 3.4rem;
+    }
+
+    section {
+      padding: 4rem 0;
+      position: relative;
+    }
+
+    .section-eyebrow {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.96rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 2.1rem;
+    }
+
+    /* Hero */
+    #hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
+      gap: 2.4rem;
+      padding-top: 3.4rem;
+      align-items: center;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      padding: 0.25rem 0.7rem;
+      font-size: 0.72rem;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+      backdrop-filter: blur(12px);
+    }
+
+    body[data-theme="light"] .badge {
+      background: rgba(248, 250, 252, 0.9);
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, var(--accent-3), #14532d);
+      box-shadow: 0 0 12px var(--accent-3);
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 4vw, 3.1rem);
+      line-height: 1.05;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-highlight {
+      background: linear-gradient(to right, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-tagline {
+      font-size: 0.97rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 1.7rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-bottom: 1.7rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.7rem 1.4rem;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+      background: transparent;
       color: var(--text);
     }
 
-    footer { padding: 2rem 0; text-align: center; color: var(--muted); font-size: 0.85rem; }
+    .btn-primary {
+      background: radial-gradient(circle at 0 0, var(--accent), var(--accent-2));
+      box-shadow: 0 18px 40px var(--card-glow-1);
+    }
 
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 22px 55px var(--card-glow-1);
+    }
+
+    .btn-ghost {
+      border-color: var(--border-subtle);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    body[data-theme="light"] .btn-ghost {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.6rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-meta strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+
+    /* Hero right card */
+    .hero-orbit-card {
+      position: relative;
+      border-radius: 26px;
+      padding: 1.6rem 1.5rem 1.4rem;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    body[data-theme="light"] .hero-orbit-card {
+      background: linear-gradient(145deg, #ffffff, #e0f2fe);
+    }
+
+    .hero-orbit-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, var(--card-glow-1), transparent 55%),
+        radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%);
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .hero-orbit-inner {
+      position: relative;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .avatar-ring {
+      width: 130px;
+      height: 130px;
+      border-radius: 999px;
+      margin: 0 auto;
+      border: 2px solid rgba(148, 163, 184, 0.7);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 30% 10%, rgba(248, 250, 252, 0.85), transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.45), transparent 55%);
+    }
+
+    .avatar-ring::after {
+      content: "";
+      position: absolute;
+      width: 150%;
+      height: 150%;
+      border-radius: inherit;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      animation: slow-spin 26s linear infinite;
+    }
+
+    @keyframes slow-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .avatar-initials {
+      position: relative;
+      z-index: 1;
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #0b1120;
+    }
+
+    .hero-orbit-caption {
+      text-align: center;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .hero-orbit-caption strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.92rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-orbit-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      justify-content: center;
+      margin-top: 0.4rem;
+    }
+
+    .tag-chip {
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+    }
+
+    body[data-theme="light"] .tag-chip {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .hero-orbit-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.7rem;
+      font-size: 0.76rem;
+    }
+
+    .orbit-stat {
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0.55rem;
+      text-align: center;
+    }
+
+    body[data-theme="light"] .orbit-stat {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .orbit-stat span {
+      display: block;
+      color: var(--muted);
+    }
+
+    .orbit-stat strong {
+      display: block;
+      margin-top: 0.15rem;
+      color: var(--text);
+    }
+
+    /* Generic cards / grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.8rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.6rem;
+    }
+
+    .card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      padding: 1.25rem 1.3rem;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      font-size: 0.86rem;
+      color: var(--muted);
+      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease, background var(--transition-speed) ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, var(--card-glow-1), transparent 55%),
+        radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.55);
+    }
+
+    .card-title {
+      position: relative;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .card-meta {
+      position: relative;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .pill-row {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.55rem;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 0.2rem 0.6rem;
+      font-size: 0.72rem;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+    }
+
+    body[data-theme="light"] .pill {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    /* SaudAI Chat */
+    #saudai .grid-2 {
+      align-items: flex-start;
+    }
+
+    .chat-panel {
+      position: relative;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+    }
+
+    .chat-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .chat-avatar-mini {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.8);
+      background: radial-gradient(circle at 30% 20%, var(--accent), var(--bg));
+      display: grid;
+      place-items: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e0f2fe;
+    }
+
+    .chat-status {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .chat-dot-online {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-3);
+      box-shadow: 0 0 10px var(--accent-3);
+      margin-right: 0.3rem;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 0.8rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      font-size: 0.8rem;
+      overflow-y: auto;
+    }
+
+    .chat-message {
+      max-width: 88%;
+      padding: 0.46rem 0.7rem;
+      border-radius: 14px;
+      line-height: 1.4;
+      position: relative;
+    }
+
+    .chat-message.user {
+      align-self: flex-end;
+      background: rgba(56, 189, 248, 0.22);
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-message.assistant {
+      align-self: flex-start;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid var(--border-subtle);
+      border-bottom-left-radius: 4px;
+      color: var(--muted);
+    }
+
+    body[data-theme="light"] .chat-message.assistant {
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .chat-input-bar {
+      padding: 0.7rem 0.8rem;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 0.55rem;
+    }
+
+    .chat-input-bar input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.5rem 0.85rem;
+      font-size: 0.8rem;
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text);
+      outline: none;
+    }
+
+    body[data-theme="light"] .chat-input-bar input {
+      background: #f9fafb;
+    }
+
+    .chat-input-bar input::placeholder {
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    .chat-input-bar button {
+      border-radius: 999px;
+      border: none;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      background: linear-gradient(to right, var(--accent), var(--accent-2));
+      color: #e0f2fe;
+      white-space: nowrap;
+    }
+
+    .chat-input-bar button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .chat-hint {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-top: 0.7rem;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 1.8rem;
+    }
+
+    .contact-card, .contact-form {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      padding: 1.4rem 1.5rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .contact-form .form-row {
+      margin-bottom: 0.85rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      margin-bottom: 0.2rem;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.48rem 0.75rem;
+      font-size: 0.82rem;
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text);
+      outline: none;
+    }
+
+    body[data-theme="light"] input[type="text"],
+    body[data-theme="light"] input[type="email"],
+    body[data-theme="light"] textarea {
+      background: #f9fafb;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    .contact-links {
+      margin-top: 0.8rem;
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+    }
+
+    .contact-links a {
+      color: var(--accent);
+    }
+
+    footer {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 1.7rem 1.4rem 2.4rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(31, 41, 55, 0.7);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Theme toggle floating button */
+    .theme-toggle {
+      position: fixed;
+      right: 1.4rem;
+      bottom: 1.6rem;
+      z-index: 60;
+    }
+
+    .theme-toggle button {
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      padding: 0.45rem 0.8rem;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      background: var(--bg-elevated);
+      color: var(--muted);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.8);
+      transition: all var(--transition-speed) ease;
+    }
+
+    .theme-toggle button:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .theme-toggle-icon {
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
     @media (max-width: 900px) {
-      #hero { grid-template-columns: 1fr; }
-      .grid-3 { grid-template-columns: 1fr; }
+      #hero,
+      .grid-2,
+      .contact-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-orbit-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        justify-content: center;
+        height: auto;
+        padding: 0.6rem 1.4rem 0.9rem;
+        gap: 0.5rem;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .grid-3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      section {
+        padding: 3.2rem 0;
+      }
+
+      .theme-toggle {
+        right: 1rem;
+        bottom: 1rem;
+      }
     }
   </style>
 </head>
 
-<body>
+<body data-theme="dark">
+  <div class="bg-stars"></div>
 
-<!-- HEADER -->
-<header>
-  <div class="nav-inner">
-    <div style="font-weight:700;font-size:1rem;">SAUD REHMAN</div>
-    <nav>
-      <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#certificates">Certificates</a></li>
-        <li><a href="#saudai">SaudAI</a></li>
-        <li><a href="#contact" class="nav-cta">Contact</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<main>
-
-<!-- HERO SECTION -->
-<section id="hero">
-  <div>
-    <h1 class="hero-title">
-      Hi, I’m <span class="hero-highlight">Saud Rehman</span>.
-    </h1>
-    <p class="hero-tagline">
-      Aerospace & Defence Engineering · Renewable Electrical Engineering · Technical Marketing · IoT & AI Product Development.
-    </p>
-
-    <a class="btn btn-primary" href="resume.pdf" target="_blank">View Resume</a>
-    <a class="btn btn-ghost" href="#saudai">Talk with SaudAI</a>
+  <!-- THEME TOGGLE -->
+  <div class="theme-toggle">
+    <button id="theme-toggle-btn" type="button">
+      <span class="theme-toggle-icon" id="theme-icon">🌙</span>
+      <span id="theme-label">Dark mode</span>
+    </button>
   </div>
 
-  <div style="text-align:center;">
-    <div style="
-      width:130px;height:130px;border-radius:999px;
-      margin:auto;background:linear-gradient(135deg,#38bdf8,#a855f7);
-      display:flex;align-items:center;justify-content:center;
-      font-size:2.5rem;font-weight:700;color:white;">
-      SR
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <h2 class="section-title">Experience</h2>
-
-  <div class="grid-3">
-    <div class="card">
-      <div class="card-title">Technical Marketing Manager — NASTP</div>
-      <div class="card-meta">2024 – Present</div>
-      <p>Creating technical narratives for aerospace & defence systems and managing stakeholder communication.</p>
-      <div class="pill-row">
-        <span class="pill">Aerospace</span>
-        <span class="pill">Defence</span>
-        <span class="pill">Marketing</span>
+  <!-- HEADER -->
+  <header>
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-orbit"></div>
+        <div>
+          <div class="logo-text-main">SAUD REHMAN</div>
+          <div class="logo-text-sub">Aerospace · Defence · Renewables · AI</div>
+        </div>
       </div>
+      <nav>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#certificates">Certificates</a></li>
+          <li><a href="#saudai">SaudAI</a></li>
+          <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
+      </nav>
     </div>
+  </header>
 
-    <div class="card">
-      <div class="card-title">Lead Project Engineer — Renergy Solutions</div>
-      <div class="card-meta">2024</div>
-      <p>Led multi-megawatt renewable energy implementations with CRM and Jira workflow optimization.</p>
-      <div class="pill-row">
-        <span class="pill">Renewables</span><span class="pill">CRM</span>
+  <main>
+    <!-- HERO -->
+    <section id="hero">
+      <div>
+        <div class="badge-row">
+          <div class="badge">
+            <span class="badge-dot"></span>
+            Open to aerospace, defence & renewable collaborations
+          </div>
+          <div class="badge">
+            Technical Marketing · Renewable Energy · IoT & AI Products
+          </div>
+        </div>
+
+        <h1 class="hero-title">
+          Hi, I’m <span class="hero-highlight">Saud&nbsp;Rehman</span>.<br />
+          I connect <span class="hero-highlight">engineering, AI & markets</span>.
+        </h1>
+
+        <p class="hero-tagline">
+          Aerospace & Defence Engineering · Renewable Electrical Engineering · Technical Marketing & Product Development.
+          I translate complex systems into clear solutions for customers and partners.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="resume.pdf" target="_blank">View Resume</a>
+          <a class="btn btn-ghost" href="#saudai">Talk with SaudAI</a>
+        </div>
+
+        <div class="hero-meta">
+          <div>
+            <strong>Technical Marketing Manager</strong>
+            NASTP · National Aerospace Science & Technology Park
+          </div>
+          <div>
+            <strong>Experience</strong>
+            Solar & C&I projects · IoT & AI products · Sales engineering
+          </div>
+          <div>
+            <strong>Location</strong>
+            Islamabad, Pakistan
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="card">
-      <div class="card-title">Product Dev & BDO — Rapidev</div>
-      <div class="card-meta">2023–2024</div>
-      <p>Technical sales engineering, Salesforce automation, and solution-based customer engagements.</p>
-      <div class="pill-row">
-        <span class="pill">Sales Engineering</span><span class="pill">Salesforce</span>
+      <div>
+        <div class="hero-orbit-card">
+          <div class="hero-orbit-inner">
+            <div class="avatar-ring">
+              <div class="avatar-initials">SR</div>
+            </div>
+            <div class="hero-orbit-caption">
+              <strong>Aerospace · Defence · Renewables</strong>
+              Technical marketing, energy engineering and product strategy combined.
+              <div class="hero-orbit-tags">
+                <span class="tag-chip">Aerospace & Defence</span>
+                <span class="tag-chip">Renewable Energy</span>
+                <span class="tag-chip">IoT & AI</span>
+                <span class="tag-chip">Technical Sales</span>
+              </div>
+            </div>
+            <div class="hero-orbit-stats">
+              <div class="orbit-stat">
+                <span>Domains</span>
+                <strong>Aero · Energy</strong>
+              </div>
+              <div class="orbit-stat">
+                <span>Focus</span>
+                <strong>Products & GTM</strong>
+              </div>
+              <div class="orbit-stat">
+                <span>Experience</span>
+                <strong>4+ years</strong>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <h2 class="section-title">Selected Projects</h2>
-
-  <div class="grid-3">
-
-    <!-- Project 1: Multi-MW Solar -->
-    <div class="card">
-      <div class="card-title">Multi-MW C&I Solar Portfolios</div>
-      <div class="card-meta">Renergy Solutions / SkyElectric</div>
-      <p>
-        Supported and led design, sizing and execution of multi-megawatt commercial & industrial solar projects,
-        improving proposal turnaround time and tracking using CRM and Jira.
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-eyebrow">About</div>
+      <h2 class="section-title">From solar roofs to space-oriented ecosystems</h2>
+      <p class="section-subtitle">
+        I started in electrical and renewable energy engineering, building and supporting solar and C&I projects.
+        That journey evolved into IoT & AI products and now technical marketing for aerospace and defence systems.
       </p>
-      <div class="pill-row">
-        <span class="pill">Solar PV</span>
-        <span class="pill">C&I Clients</span>
-        <span class="pill">Jira & CRM</span>
-      </div>
-    </div>
 
-    <!-- Project 2: IoT / AI Product -->
-    <div class="card">
-      <div class="card-title">IoT Monitoring & Control Platform</div>
-      <div class="card-meta">Spacedome</div>
-      <p>
-        Worked on an AI & IoT product stack for monitoring and controlling devices, defining features,
-        user flows and technical positioning to increase adoption and efficiency.
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Who I am</div>
+          <div class="card-meta">Engineer · Product mind · Storyteller</div>
+          <p>
+            I’m comfortable in both the lab and the boardroom — understanding how systems and data work, then
+            communicating that clearly to stakeholders, partners and customers.
+          </p>
+          <p style="margin-top:0.6rem;">
+            I enjoy turning requirements into products, and products into narratives that resonate:
+            aligning engineering constraints with market reality.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">What I work with</div>
+          <div class="card-meta">Tools & domains</div>
+          <p>
+            Domains: Aerospace & defence, solar & renewables, IoT platforms, AI-assisted workflows.
+            Tools: Salesforce, Jira, Excel, Copilot, CRMs, and modern project management stacks.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Aerospace & Defence</span>
+            <span class="pill">Renewable Energy</span>
+            <span class="pill">IoT & AI</span>
+            <span class="pill">Sales & GTM</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-eyebrow">Experience</div>
+      <h2 class="section-title">Roles that shaped my thinking</h2>
+      <p class="section-subtitle">
+        A blend of hands-on engineering, product development, sales and technical marketing
+        across energy, IoT and aerospace ecosystems.
       </p>
-      <div class="pill-row">
-        <span class="pill">IoT</span>
-        <span class="pill">AI</span>
-        <span class="pill">Product Dev</span>
-      </div>
-    </div>
 
-    <!-- Project 3: Aerospace & Defence Marketing -->
-    <div class="card">
-      <div class="card-title">Aerospace & Defence Market Narratives</div>
-      <div class="card-meta">NASTP</div>
-      <p>
-        Shaping messaging and technical narratives around radar, EW and aerospace systems for local
-        and international stakeholders, bridging engineering details with market needs.
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">Technical Marketing Manager</div>
+          <div class="card-meta">NASTP · 2024 – Present</div>
+          <p>
+            Crafting narratives around aerospace & defence technologies, supporting ecosystem growth and
+            engaging stakeholders with clear, technically accurate messaging.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Aerospace</span>
+            <span class="pill">Defence</span>
+            <span class="pill">Marketing</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Lead Project Engineer</div>
+          <div class="card-meta">Renergy Solutions · 2024</div>
+          <p>
+            Led multi-megawatt renewable implementations, aligning design, execution and CRM-based workflows
+            for commercial & industrial clients.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Renewables</span>
+            <span class="pill">C&I Solar</span>
+            <span class="pill">Jira & CRM</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Product Dev & BDO</div>
+          <div class="card-meta">Rapidev · 2023–2024</div>
+          <p>
+            Combined sales engineering with process optimization using Salesforce and structured BoQs,
+            consistently meeting and exceeding targets.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Sales Engineering</span>
+            <span class="pill">Salesforce</span>
+            <span class="pill">Business Dev</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Product Development Manager</div>
+          <div class="card-meta">Spacedome · 2023</div>
+          <p>
+            Guided AI & IoT product development, defining features, workflows and go-to-market strategies
+            to increase adoption and streamline operations.
+          </p>
+          <div class="pill-row">
+            <span class="pill">IoT</span>
+            <span class="pill">AI</span>
+            <span class="pill">Product Dev</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Assistant Manager (Solar)</div>
+          <div class="card-meta">SkyElectric · 2020–2023</div>
+          <p>
+            Designed and sold tailored solar solutions, using Salesforce, Jira and detailed BoQs to align
+            engineering and commercial requirements.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Solar PV</span>
+            <span class="pill">Technical Sales</span>
+            <span class="pill">Customer Success</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Education</div>
+          <div class="card-meta">COMSATS University</div>
+          <p>
+            MEng Renewable Electrical Engineering · BE Electrical & Electronics.
+            Final year project in wind speed forecasting using Bi-LSTM and Bi-GRU.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Renewable Electrical Engineering</span>
+            <span class="pill">Electrical & Electronics</span>
+            <span class="pill">ML for Energy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-eyebrow">Projects</div>
+      <h2 class="section-title">Selected work & systems</h2>
+      <p class="section-subtitle">
+        A snapshot of projects that combine engineering depth with usability, scalability and clear outcomes.
       </p>
-      <div class="pill-row">
-        <span class="pill">Aerospace</span>
-        <span class="pill">Defence</span>
-        <span class="pill">Technical Marketing</span>
-      </div>
-    </div>
 
-    <!-- Project 4: Wind Forecasting FYP -->
-    <div class="card">
-      <div class="card-title">Wind Speed Forecasting with Bi-LSTM & Bi-GRU</div>
-      <div class="card-meta">Final Year Project</div>
-      <p>
-        Developed a short-term wind speed prediction model using Bi-LSTM and Bi-GRU on wind power plant data,
-        evaluating performance using MAE, RMSE and R² for 12-hour forecasts.
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">Multi-MW C&I Solar Portfolios</div>
+          <div class="card-meta">Renergy Solutions / SkyElectric</div>
+          <p>
+            Supported and led design, sizing and execution for commercial & industrial solar projects,
+            improving proposal turnaround and tracking using CRM + Jira workflows.
+          </p>
+          <div class="pill-row">
+            <span class="pill">C&I Solar</span>
+            <span class="pill">Project Workflows</span>
+            <span class="pill">CRM</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">IoT Monitoring & Control Platform</div>
+          <div class="card-meta">Spacedome</div>
+          <p>
+            Contributed to an IoT platform for monitoring and controlling devices, shaping features,
+            user journeys and technical positioning to increase engagement and efficiency.
+          </p>
+          <div class="pill-row">
+            <span class="pill">IoT</span>
+            <span class="pill">Product Strategy</span>
+            <span class="pill">UX Flows</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Aerospace & Defence Narratives</div>
+          <div class="card-meta">NASTP</div>
+          <p>
+            Developed and refined messaging for radar, EW and aerospace systems, aligning engineering,
+            policy and market needs for domestic and international stakeholders.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Aerospace</span>
+            <span class="pill">Defence</span>
+            <span class="pill">Stakeholder Comms</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Wind Speed Forecasting FYP</div>
+          <div class="card-meta">Academic · ML</div>
+          <p>
+            Built short-term wind speed prediction models using Bi-LSTM and Bi-GRU on power plant data,
+            evaluating with MAE, RMSE and R² for 12-hour ahead forecasts.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Time Series</span>
+            <span class="pill">Bi-LSTM</span>
+            <span class="pill">Renewables</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATES -->
+    <section id="certificates">
+      <div class="section-eyebrow">Certificates</div>
+      <h2 class="section-title">Continuous learning & upskilling</h2>
+      <p class="section-subtitle">
+        Verified credentials that complement my engineering background with project management, data,
+        digital marketing and AI-enhanced workflows.
       </p>
-      <div class="pill-row">
-        <span class="pill">Machine Learning</span>
-        <span class="pill">Renewables</span>
-        <span class="pill">Time Series</span>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">Foundations of Project Management</div>
+          <div class="card-meta">Coursera</div>
+          <p>
+            Core project planning, execution and stakeholder communication skills.
+          </p>
+          <p style="margin-top:0.4rem;">
+            <a href="https://coursera.org/share/2531594ffb1426329db07647d88997b5" target="_blank">
+              View certificate →
+            </a>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Excel Skills for Business</div>
+          <div class="card-meta">Coursera</div>
+          <p>
+            Practical Excel skills for analysis, dashboards and decision support in projects and sales.
+          </p>
+          <p style="margin-top:0.4rem;">
+            <a href="https://coursera.org/share/1cd03e814f56f6e035ed964b8240f07a" target="_blank">
+              View certificate →
+            </a>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Microsoft Copilot Essentials</div>
+          <div class="card-meta">Coursera</div>
+          <p>
+            Using Copilot and AI tools to accelerate documentation, analysis and reporting.
+          </p>
+          <p style="margin-top:0.4rem;">
+            <a href="https://coursera.org/share/a1a2d7d752979d200851db6be77ea61b" target="_blank">
+              View certificate →
+            </a>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Digital Marketing & E-commerce</div>
+          <div class="card-meta">Coursera</div>
+          <p>
+            Understanding funnels, positioning and campaign strategies that now support technical marketing.
+          </p>
+          <p style="margin-top:0.4rem;">
+            <a href="https://coursera.org/share/3f1f8227cd709d202f87f035fc4ee0ce" target="_blank">
+              View certificate →
+            </a>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Marketing Benefits vs. Features</div>
+          <div class="card-meta">Coursera</div>
+          <p>
+            Translating engineering features into outcomes that matter to decision-makers.
+          </p>
+          <p style="margin-top:0.4rem;">
+            <a href="https://coursera.org/share/42a49734b8a84ec0a9a1c6f65a76c83f" target="_blank">
+              View certificate →
+            </a>
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
 
-  </div>
-</section>
+    <!-- SAUDAI CHAT -->
+    <section id="saudai">
+      <div class="section-eyebrow">SaudAI</div>
+      <h2 class="section-title">Talk with my AI twin</h2>
+      <p class="section-subtitle">
+        Ask SaudAI about my experience, projects or perspectives on renewables, aerospace, IoT, AI tools and career choices.
+        Answers are generated by an AI model but grounded in my real background.
+      </p>
 
-<!-- CERTIFICATES -->
-<section id="certificates">
-  <h2 class="section-title">Certificates</h2>
+      <div class="grid-2">
+        <div class="chat-panel">
+          <div class="chat-header">
+            <div class="chat-header-left">
+              <div class="chat-avatar-mini">SR</div>
+              <div>
+                <div style="font-size:0.8rem;font-weight:500;">SaudAI</div>
+                <div class="chat-status"><span class="chat-dot-online"></span>Online · Powered by ChatGPT</div>
+              </div>
+            </div>
+          </div>
 
-  <div class="grid-3">
+          <div class="chat-body" id="chat-body">
+            <div class="chat-message assistant">
+              Salam! I’m SaudAI — an AI version of Saud. Ask me about my experience, projects, tools I use, or career advice in engineering, renewables, IoT and technical marketing.
+            </div>
+          </div>
 
-    <!-- Certificate 1 -->
-    <div class="card">
-      <div class="card-title">Foundations of Project Management</div>
-      <div class="card-meta">Coursera</div>
-      <p><a href="https://coursera.org/share/2531594ffb1426329db07647d88997b5" target="_blank">View Certificate</a></p>
-    </div>
+          <div class="chat-input-bar">
+            <input id="chat-input" type="text" placeholder="Ask SaudAI anything..." />
+            <button id="chat-send">Send</button>
+          </div>
+        </div>
 
-    <!-- Certificate 2 -->
-    <div class="card">
-      <div class="card-title">Excel Skills for Business</div>
-      <div class="card-meta">Coursera</div>
-      <p><a href="https://coursera.org/share/1cd03e814f56f6e035ed964b8240f07a" target="_blank">View Certificate</a></p>
-    </div>
-
-    <!-- Certificate 3 -->
-    <div class="card">
-      <div class="card-title">Microsoft Copilot Essentials</div>
-      <div class="card-meta">Coursera</div>
-      <p><a href="https://coursera.org/share/a1a2d7d752979d200851db6be77ea61b" target="_blank">View Certificate</a></p>
-    </div>
-
-    <!-- Certificate 4 -->
-    <div class="card">
-      <div class="card-title">Digital Marketing & E-commerce</div>
-      <div class="card-meta">Coursera</div>
-      <p><a href="https://coursera.org/share/3f1f8227cd709d202f87f035fc4ee0ce" target="_blank">View Certificate</a></p>
-    </div>
-
-    <!-- Certificate 5 -->
-    <div class="card">
-      <div class="card-title">Marketing Benefits vs Features</div>
-      <div class="card-meta">Coursera</div>
-      <p><a href="https://coursera.org/share/42a49734b8a84ec0a9a1c6f65a76c83f" target="_blank">View Certificate</a></p>
-    </div>
-
-  </div>
-</section>
-
-<!-- SAUDAI CHAT -->
-<section id="saudai">
-  <h2 class="section-title">Talk with SaudAI</h2>
-
-  <div class="chat-panel">
-    <div class="chat-body" id="chat-body">
-      <div class="chat-message assistant">
-        Salam! I’m SaudAI — your AI assistant based on Saud’s real experience. Ask me anything!
+        <div>
+          <div class="card">
+            <div class="card-title">What you can ask me</div>
+            <div class="card-meta">Examples</div>
+            <p>Try questions like:</p>
+            <ul style="margin-top:0.4rem; padding-left:1.1rem; font-size:0.82rem;">
+              <li>“How did you move from solar to aerospace & defence?”</li>
+              <li>“What tools do you recommend for managing engineering projects?”</li>
+              <li>“Explain your wind forecasting final year project.”</li>
+              <li>“How would you approach a C&I solar client?”</li>
+            </ul>
+            <p style="margin-top:0.7rem;">
+              I’ll respond as if I’m Saud, in first person, keeping answers practical and honest.
+            </p>
+          </div>
+          <p class="chat-hint">
+            Note: This is a demo chat UI. In production, it connects to a backend route that securely uses the OpenAI API.
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="chat-input-bar">
-      <input id="chat-input" type="text" placeholder="Ask SaudAI anything..." />
-      <button id="chat-send" class="btn btn-primary">Send</button>
-    </div>
-  </div>
-</section>
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-eyebrow">Contact</div>
+      <h2 class="section-title">Let’s build something meaningful</h2>
+      <p class="section-subtitle">
+        Reach out if you’d like to collaborate on aerospace & defence, renewable energy, IoT & AI products,
+        or technical marketing strategies.
+      </p>
 
-<!-- CONTACT -->
-<section id="contact">
-  <h2>Contact</h2>
-  <p>Email: <a href="mailto:saudrehman585@icloud.com">saudrehman585@icloud.com</a></p>
-  <p>Phone: <a href="tel:+923340007283">+92 334 000 7283</a></p>
-  <p>GitHub: <a href="https://github.com/SaudRehman-source" target="_blank">github.com/YOUR_GITHUB_USERNAME</a></p>
-</section>
+      <div class="contact-grid">
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Thanks! This is a demo form. Connect it to a backend or service like Formspree to receive submissions.');">
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Your full name" required />
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="How can we work together?"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Send message</button>
+        </form>
 
-</main>
+        <div class="contact-card">
+          <div class="card-title">Direct contact</div>
+          <div class="card-meta">Stay connected</div>
+          <p>You can reach me or follow my work here:</p>
+          <div class="contact-links">
+            <a href="mailto:saudrehman585@icloud.com">saudrehman585@icloud.com</a>
+            <a href="tel:+923340007283">+92 334 000 7283</a>
+            <a href="https://www.linkedin.com/in/saud-rehman585" target="_blank" rel="noreferrer">
+              LinkedIn · /saud-rehman585
+            </a>
+            <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" rel="noreferrer">
+              GitHub · @YOUR_GITHUB_USERNAME
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<footer>
-  © <span id="year"></span> Saud Rehman — All Rights Reserved.
-</footer>
+  <footer>
+    <div>© <span id="year"></span> Saud Rehman. All rights reserved.</div>
+    <div>Designed with a space–inspired theme & powered by SaudAI.</div>
+  </footer>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+  <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-  const SAUDAI_API_URL = "https://YOUR-RENDER-BACKEND.onrender.com/api/saudai"; // <-- CHANGE THIS
+    // THEME TOGGLE
+    const bodyEl = document.body;
+    const themeBtn = document.getElementById("theme-toggle-btn");
+    const themeIcon = document.getElementById("theme-icon");
+    const themeLabel = document.getElementById("theme-label");
 
-  const chatBody = document.getElementById("chat-body");
-  const chatInput = document.getElementById("chat-input");
-  const chatSend = document.getElementById("chat-send");
-
-  async function sendMessage() {
-    const text = chatInput.value.trim();
-    if (!text) return;
-
-    const userMsg = document.createElement("div");
-    userMsg.className = "chat-message user";
-    userMsg.textContent = text;
-    chatBody.appendChild(userMsg);
-
-    chatInput.value = "";
-    chatSend.disabled = true;
-
-    const thinking = document.createElement("div");
-    thinking.className = "chat-message assistant";
-    thinking.textContent = "Thinking...";
-    chatBody.appendChild(thinking);
-
-    try {
-      const res = await fetch(SAUDAI_API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
-      });
-
-      const data = await res.json();
-      thinking.textContent = data.reply;
-    } catch {
-      thinking.textContent = "Backend not connected yet. Please deploy using Render.";
+    function applyTheme(theme) {
+      bodyEl.setAttribute("data-theme", theme);
+      if (theme === "light") {
+        themeIcon.textContent = "☀️";
+        themeLabel.textContent = "Light mode";
+      } else {
+        themeIcon.textContent = "🌙";
+        themeLabel.textContent = "Dark mode";
+      }
     }
 
-    chatSend.disabled = false;
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
+    const storedTheme = localStorage.getItem("saud-theme");
+    applyTheme(storedTheme === "light" ? "light" : "dark");
 
-  chatSend.addEventListener("click", sendMessage);
-  chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendMessage();
-  });
-</script>
+    themeBtn.addEventListener("click", () => {
+      const current = bodyEl.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      applyTheme(next);
+      localStorage.setItem("saud-theme", next);
+    });
 
+    // SAUDAI CHAT
+    const SAUDAI_API_URL = "https://YOUR-RENDER-BACKEND.onrender.com/api/saudai"; // TODO: replace with your actual Render URL
+
+    const chatBody = document.getElementById("chat-body");
+    const chatInput = document.getElementById("chat-input");
+    const chatSend = document.getElementById("chat-send");
+
+    async function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "chat-message user";
+      userMsg.textContent = text;
+      chatBody.appendChild(userMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      chatInput.value = "";
+      chatInput.focus();
+      chatSend.disabled = true;
+
+      const thinking = document.createElement("div");
+      thinking.className = "chat-message assistant";
+      thinking.textContent = "SaudAI is thinking...";
+      chatBody.appendChild(thinking);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      try {
+        const res = await fetch(SAUDAI_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text }),
+        });
+
+        const data = await res.json();
+        thinking.textContent = data.reply || "I couldn’t generate a response right now, please try again.";
+      } catch (err) {
+        console.error(err);
+        thinking.textContent = "Error: SaudAI backend is not connected yet or unavailable.";
+      } finally {
+        chatSend.disabled = false;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    }
+
+    chatSend.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
 </body>
 </html>
