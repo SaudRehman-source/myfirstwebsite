@@ -8,27 +8,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ OpenAI client (uses OPENAI_API_KEY from .env)
+// ✅ OpenAI client (uses OPENAI_API_KEY from env)
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// ✅ CORS – allow your GitHub Pages domain in production
-// During local dev, you can temporarily allow "*"
-const allowedOrigins = (process.env.ALLOWED_ORIGIN || "")
-  .split(",")
-  .map(o => o.trim())
-  .filter(Boolean);
-
+// ✅ Simple CORS: allow all origins (OK for personal site)
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow curl / Postman / file://
-      if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("Not allowed by CORS: " + origin));
-    },
+    origin: "*",
   })
 );
 
@@ -63,9 +51,10 @@ app.post("/api/saudai", async (req, res) => {
       return res.status(400).json({ error: "Missing 'message' in request body." });
     }
 
-    // Call OpenAI Responses API
+    console.log("💬 SaudAI request:", message);
+
     const response = await client.responses.create({
-      model: "gpt-5.1-mini", // or "gpt-5.1" if you want bigger model
+      model: "gpt-5.1-mini", // or "gpt-5.1" for a bigger model
       instructions: SAUDAI_INSTRUCTIONS,
       input: [
         {
@@ -75,7 +64,23 @@ app.post("/api/saudai", async (req, res) => {
       ],
     });
 
-    const reply = response.output_text || "I couldn't generate a reply right now, please try again.";
+    // Extract text safely from Responses API
+    let reply = "";
+    try {
+      const firstOutput = response.output?.[0];
+      const firstContent = firstOutput?.content?.[0];
+
+      if (firstContent?.type === "output_text") {
+        // Some SDKs put text.value, some just text (string)
+        reply = firstContent.text?.value || firstContent.text || "";
+      }
+    } catch (innerErr) {
+      console.error("Error extracting reply:", innerErr);
+    }
+
+    if (!reply) {
+      reply = "I couldn’t generate a reply right now, please try again.";
+    }
 
     res.json({ reply });
   } catch (err) {
