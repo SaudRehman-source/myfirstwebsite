@@ -205,7 +205,7 @@ app.post("/api/saudai", async (req, res) => {
     const timeoutMs = Number(process.env.SAUDAI_TIMEOUT_MS) || 60000;
     const genOptions = {
       temperature: Number(process.env.SAUDAI_TEMPERATURE) || 0.2,
-      max_new_tokens: Number(process.env.SAUDAI_MAX_TOKENS) || 300,
+      max_new_tokens: Number(process.env.SAUDAI_MAX_TOKENS) || 30000,
     };
 
     const reply = await callDeepSeekStream({ model: modelName, messages, timeoutMs, genOptions });
@@ -240,11 +240,8 @@ app.post("/api/saudai_sync", async (req, res) => {
     const modelName = process.env.SAUDAI_MODEL || "deepseek-r1:1.5b";
     const timeoutMs = Number(process.env.SAUDAI_TIMEOUT_MS) || 120000;
     const genOptions = {
-      const genOptions = {
-      temperature: Number(process.env.SAUDAI_TEMPERATURE) || 0.08,
-      max_new_tokens: Number(process.env.SAUDAI_MAX_TOKENS) || 400,
-};
-
+      temperature: Number(process.env.SAUDAI_TEMPERATURE) || 0.2,
+      max_new_tokens: Number(process.env.SAUDAI_MAX_TOKENS) || 15000,
     };
 
     const reply = await callDeepSeekSync({ model: modelName, messages, timeoutMs, genOptions });
