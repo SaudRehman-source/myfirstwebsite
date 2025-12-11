@@ -40,24 +40,22 @@ Guidelines:
 `;
 
 /**
- * Helper: POST to Ollama with timeout and good defaults
- * - timeoutMs: how long to wait before aborting (default 60s)
- * - model: deepseek-r1:8b or smaller
- * - genOptions: e.g. max_new_tokens, temperature, stop, etc.
+ * callDeepSeek - streams Ollama (DeepSeek) response and concatenates final content.
+ * - model: e.g. deepseek-r1:1.5b or deepseek-r1:8b
+ * - timeoutMs: how long to wait before abort (default 60s)
+ * - genOptions: max_new_tokens, temperature, etc.
  */
-async function callOllamaChat({ model = "deepseek-r1:8b", messages = [], timeoutMs = 60000, genOptions = {} } = {}) {
+async function callDeepSeek({ model = "deepseek-r1:1.5b", messages = [], timeoutMs = 60000, genOptions = {} } = {}) {
   const fetch = await ensureFetch();
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
-  // Provide some generation params (reduce reply size to speed things up)
+  // include stream: true so Ollama returns line-delimited JSON chunks
   const payload = {
     model,
     messages,
-    // Typical Ollama accepts `max_tokens`/`max_new_tokens` or similar;
-    // include common options but you can tune them.
-    // If your model ignores some fields, it won't hurt.
+    stream: true,
     ...genOptions,
   };
 
@@ -69,23 +67,80 @@ async function callOllamaChat({ model = "deepseek-r1:8b", messages = [], timeout
       signal: controller.signal,
     });
 
-    clearTimeout(timeout);
-
-    const txt = await resp.text().catch(() => null);
-
-    // If response JSON, try parse. If not, return text fallback.
-    let data = null;
-    try {
-      data = txt ? JSON.parse(txt) : null;
-    } catch (parseErr) {
-      // Not JSON — return raw text
-      return { ok: resp.ok, rawText: txt, parsed: null, status: resp.status };
+    // non-stream fallback: if server returns a single JSON object, read it as text and try parse
+    if (!resp.ok) {
+      const txt = await resp.text().catch(() => "");
+      clearTimeout(timeout);
+      throw new Error(`Ollama responded with status ${resp.status}: ${txt.slice(0, 400)}`);
     }
 
-    return { ok: resp.ok, parsed: data, rawText: txt, status: resp.status };
+    // If body is null (shouldn't be), return empty
+    if (!resp.body) {
+      clearTimeout(timeout);
+      return "";
+    }
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let finalText = "";
+    let buffer = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+      buffer += chunk;
+
+      // Ollama tends to send JSON objects separated by newlines.
+      // Process complete lines; keep remainder in buffer.
+      const lines = buffer.split("\n");
+      buffer = lines.pop(); // remainder
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        // Sometimes non-json garbage may appear — guard parse
+        try {
+          const j = JSON.parse(trimmed);
+
+          // If object contains message.content (the generated text), append it
+          if (j?.message?.content && typeof j.message.content === "string") {
+            finalText += j.message.content;
+          }
+
+          // Some streams include partial tokens in .message.thinking — ignore them
+          // Optionally, you could append thinking chunks if you want progressive output
+
+          // If final done flag set, we can optionally break early.
+          if (j.done === true) {
+            // continue to drain the reader until done === true and then exit loop
+          }
+        } catch (err) {
+          // Not JSON — ignore (may be partial chunk)
+          // console.debug("Non-JSON chunk skipped:", trimmed.slice(0, 200));
+        }
+      }
+    }
+
+    // If any leftover buffer contains a final JSON object, try parse it
+    const leftover = buffer.trim();
+    if (leftover) {
+      try {
+        const j = JSON.parse(leftover);
+        if (j?.message?.content && typeof j.message.content === "string") {
+          finalText += j.message.content;
+        }
+      } catch (_) {
+        // ignore
+      }
+    }
+
+    clearTimeout(timeout);
+    return finalText.trim();
   } catch (err) {
     clearTimeout(timeout);
-    // Propagate abort so caller can detect timeout
+    // Re-throw so caller can distinguish AbortError (timeout) vs others
     throw err;
   }
 }
@@ -97,81 +152,32 @@ app.post("/api/saudai", async (req, res) => {
       return res.status(400).json({ reply: "I need a message string to respond to." });
     }
 
-    // build messages array for Ollama
     const messages = [
       { role: "system", content: SAUDAI_INSTRUCTIONS },
       { role: "user", content: message },
     ];
 
-    // Choose model and generation options:
-    // - If you find deepseek-r1:8b is slow, switch to deepseek-r1:1.5b
-    const modelName = process.env.SAUDAI_MODEL || "deepseek-r1:8b";
-    const timeoutMs = Number(process.env.SAUDAI_TIMEOUT_MS) || 60000; // default 60s
-
-    // sensible generation options to limit length & speed
+    const modelName = process.env.SAUDAI_MODEL || "deepseek-r1:1.5b";
+    const timeoutMs = Number(process.env.SAUDAI_TIMEOUT_MS) || 60000;
     const genOptions = {
-      temperature: 0.2,
-      // limit response size. Reduce if responses are slow.
+      temperature: Number(process.env.SAUDAI_TEMPERATURE) || 0.2,
       max_new_tokens: Number(process.env.SAUDAI_MAX_TOKENS) || 300,
     };
 
-    // Call Ollama
-    const result = await callOllamaChat({ model: modelName, messages, timeoutMs, genOptions });
+    // prefer smaller model by default for responsiveness; use 8b if you set env
+    const reply = await callDeepSeek({ model: modelName, messages, timeoutMs, genOptions });
 
-    if (!result.ok) {
-      console.error("Ollama responded with non-OK:", result.status, result.rawText?.slice(0, 400));
-      return res.status(502).json({ reply: `Model server error (${result.status}).` });
+    if (!reply || reply.trim().length === 0) {
+      return res.json({ reply: "I couldn’t generate a response right now. Try again or increase timeout." });
     }
 
-    // Attempt to extract reply text from common shapes:
-    // - data.message.content (string)
-    // - data.output[0].content[0].text or .text.value
-    // - fallback: rawText (plain)
-    const data = result.parsed;
-
-    let reply = null;
-
-    if (data) {
-      // Ollama sometimes returns: { message: { role, content: "..." } }
-      if (typeof data?.message?.content === "string") {
-        reply = data.message.content;
-      }
-      // Another possible shape: response.output[0].content[0].text or .text.value
-      else if (Array.isArray(data.output) && data.output[0]?.content) {
-        const c = data.output[0].content[0];
-        if (c?.type === "output_text" && (c.text?.value || c.text)) {
-          reply = c.text?.value || c.text || null;
-        } else if (typeof c === "string") {
-          reply = c;
-        }
-      }
-      // Some Ollama responses put generated text in data.output_text
-      else if (typeof data.output_text === "string") {
-        reply = data.output_text;
-      }
-      // Some models return `data.choices[0].message.content` (OpenAI-like)
-      else if (data.choices?.[0]?.message?.content) {
-        reply = data.choices[0].message.content;
-      }
-    }
-
-    // fallback to rawText if parsing failed but we have text
-    if (!reply && result.rawText) {
-      // If rawText looks like JSON lines / stream, show first 200 chars
-      reply = result.rawText;
-    }
-
-    if (!reply) {
-      reply = "I couldn’t generate a response right now. Check model logs or increase timeout.";
-    }
-
-    res.json({ reply });
+    return res.json({ reply });
   } catch (err) {
     console.error("SaudAI error:", err?.name || err, err?.message || "");
     if (err.name === "AbortError") {
       return res.status(504).json({ reply: "Request timed out waiting for model. Try again or increase timeout." });
     }
-    res.status(500).json({ reply: "There was an error talking to the model. See server logs." });
+    return res.status(500).json({ reply: "There was an error talking to the model. See server logs." });
   }
 });
 
@@ -179,6 +185,6 @@ app.get("/", (req, res) => res.send("SaudAI (DeepSeek) backend is running."));
 
 app.listen(PORT, () => {
   console.log(`SaudAI backend (DeepSeek) listening on port ${PORT}`);
-  console.log("Model:", process.env.SAUDAI_MODEL || "deepseek-r1:8b");
+  console.log("Model:", process.env.SAUDAI_MODEL || "deepseek-r1:1.5b");
   console.log("Timeout (ms):", process.env.SAUDAI_TIMEOUT_MS || 60000);
 });
