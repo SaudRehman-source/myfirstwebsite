@@ -240,8 +240,11 @@ app.post("/api/saudai_sync", async (req, res) => {
     const modelName = process.env.SAUDAI_MODEL || "deepseek-r1:1.5b";
     const timeoutMs = Number(process.env.SAUDAI_TIMEOUT_MS) || 120000;
     const genOptions = {
-      temperature: Number(process.env.SAUDAI_TEMPERATURE) || 0.2,
-      max_new_tokens: Number(process.env.SAUDAI_MAX_TOKENS) || 150,
+      const genOptions = {
+      temperature: Number(process.env.SAUDAI_TEMPERATURE) || 0.08,
+      max_new_tokens: Number(process.env.SAUDAI_MAX_TOKENS) || 400,
+};
+
     };
 
     const reply = await callDeepSeekSync({ model: modelName, messages, timeoutMs, genOptions });
@@ -260,6 +263,6 @@ app.get("/", (req, res) => res.send("SaudAI (DeepSeek) backend is running."));
 
 app.listen(PORT, () => {
   console.log(`SaudAI backend (DeepSeek) listening on port ${PORT}`);
-  console.log("Model:", process.env.SAUDAI_MODEL || "deepseek-r1:1.5b");
+  console.log("Model:", process.env.SAUDAI_MODEL || "deepseek-r1:8b");
   console.log("Timeout (ms):", process.env.SAUDAI_TIMEOUT_MS || 60000);
 });
