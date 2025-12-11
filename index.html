@@ -28,7 +28,6 @@
       --card-glow-1: rgba(56, 189, 248, 0.25);
       --card-glow-2: rgba(168, 85, 247, 0.25);
 
-      /* Apple-style dark background: soft glow at top */
       background:
         radial-gradient(circle at 50% -25%, rgba(37, 99, 235, 0.45), transparent 60%),
         #020617;
@@ -48,821 +47,173 @@
       --card-glow-1: rgba(37, 99, 235, 0.18);
       --card-glow-2: rgba(168, 85, 247, 0.18);
 
-      /* Apple-style light background: soft blue glow at top, clean white below */
       background:
         radial-gradient(circle at 50% -30%, rgba(199, 210, 254, 0.95), transparent 60%),
         linear-gradient(to bottom, #f9fafb 0%, #ffffff 60%);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text);
+      background: var(--bg);
       scroll-behavior: smooth;
       transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* Layout */
+    a { color: inherit; text-decoration: none; }
     header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position: sticky; top: 0; z-index: 50;
       backdrop-filter: blur(18px);
-      background: linear-gradient(
-        to bottom,
-        rgba(15, 23, 42, 0.92),
-        rgba(15, 23, 42, 0.6)
-      );
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.6));
       border-bottom: 1px solid var(--border-subtle);
       transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
     }
-
     body[data-theme="light"] header {
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.96),
-        rgba(248, 250, 252, 0.9)
-      );
+      background: linear-gradient(to bottom, rgba(255,255,255,0.96), rgba(248,250,252,0.9));
     }
 
-    .nav-inner {
-      max-width: 1140px;
-      margin: 0 auto;
-      height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.4rem;
-    }
+    .nav-inner { max-width: 1140px; margin: 0 auto; height: 68px; display:flex; align-items:center; justify-content:space-between; padding: 0 1.4rem; }
+    .logo { display:flex; align-items:center; gap:0.7rem; }
+    .logo-orbit { width:36px; height:36px; border-radius:999px; background: conic-gradient(from 220deg, var(--accent), var(--accent-2), var(--accent), var(--accent-3)); position:relative; box-shadow: 0 0 22px var(--card-glow-1); }
+    .logo-orbit::after { content:""; position:absolute; inset:7px; border-radius:inherit; background: radial-gradient(circle at 30% 20%, #ffffff, #0f172a); opacity:0.9; }
+    .logo-text-main{ font-size:0.98rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; }
+    .logo-text-sub{ font-size:0.7rem; color:var(--muted); }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-    }
+    nav ul { display:flex; gap:1rem; list-style:none; font-size:0.84rem; align-items:center; }
+    nav a { padding:0.3rem 0.75rem; border-radius:999px; color:var(--muted); border:1px solid transparent; transition:all var(--transition-speed) ease;}
+    nav a:hover{ color:var(--text); border-color: rgba(148,163,184,0.5); background: rgba(15,23,42,0.85); }
+    body[data-theme="light"] nav a:hover { background: rgba(209,213,219,0.4); }
 
-    .logo-orbit {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background:
-        conic-gradient(from 220deg, var(--accent), var(--accent-2), var(--accent), var(--accent-3));
-      position: relative;
-      box-shadow: 0 0 22px var(--card-glow-1);
-    }
+    .nav-cta { border-color: rgba(56,189,248,0.7); color:var(--accent); box-shadow: 0 0 18px var(--card-glow-1); }
 
-    .logo-orbit::after {
-      content: "";
-      position: absolute;
-      inset: 7px;
-      border-radius: inherit;
-      background: radial-gradient(circle at 30% 20%, #ffffff, #0f172a);
-      opacity: 0.9;
-    }
+    main { max-width:1140px; margin:0 auto; padding: 2.7rem 1.4rem 3.4rem; }
+    section { padding:4rem 0; position:relative; }
 
-    .logo-text-main {
-      font-size: 0.98rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .logo-text-sub {
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    nav ul {
-      display: flex;
-      gap: 1rem;
-      list-style: none;
-      font-size: 0.84rem;
-    }
-
-    nav a {
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      color: var(--muted);
-      border: 1px solid transparent;
-      transition: all var(--transition-speed) ease;
-    }
-
-    nav a:hover {
-      color: var(--text);
-      border-color: rgba(148, 163, 184, 0.5);
-      background: rgba(15, 23, 42, 0.85);
-    }
-
-    body[data-theme="light"] nav a:hover {
-      background: rgba(209, 213, 219, 0.4);
-    }
-
-    .nav-cta {
-      border-color: rgba(56, 189, 248, 0.7);
-      color: var(--accent);
-      box-shadow: 0 0 18px var(--card-glow-1);
-    }
-
-    main {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 2.7rem 1.4rem 3.4rem;
-    }
-
-    section {
-      padding: 4rem 0;
-      position: relative;
-    }
-
-    .section-eyebrow {
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-subtitle {
-      font-size: 0.96rem;
-      color: var(--muted);
-      max-width: 620px;
-      margin-bottom: 2.1rem;
-    }
+    .section-eyebrow{ font-size:0.76rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--accent); margin-bottom:0.4rem; }
+    .section-title{ font-size:1.8rem; font-weight:600; margin-bottom:0.5rem; }
+    .section-subtitle{ font-size:0.96rem; color:var(--muted); max-width:620px; margin-bottom:2.1rem; }
 
     /* Hero */
-    #hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
-      gap: 2.4rem;
-      padding-top: 3.4rem;
-      align-items: center;
-    }
+    #hero{ display:grid; grid-template-columns: minmax(0,1.7fr) minmax(0,1.1fr); gap:2.4rem; padding-top:3.4rem; align-items:center; }
+    .badge-row { display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:1.4rem; }
+    .badge{ display:inline-flex; align-items:center; gap:0.4rem; border-radius:999px; border:1px solid var(--border-subtle); padding:0.25rem 0.7rem; font-size:0.72rem; background: rgba(15,23,42,0.9); color:var(--muted); backdrop-filter: blur(12px); }
+    body[data-theme="light"] .badge{ background: rgba(248,250,252,0.9); }
+    .badge-dot{ width:7px; height:7px; border-radius:999px; background: radial-gradient(circle at 30% 20%, var(--accent-3), #14532d); box-shadow:0 0 12px var(--accent-3); }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-bottom: 1.4rem;
-    }
+    .hero-title{ font-size:clamp(2.2rem,4vw,3.1rem); line-height:1.05; margin-bottom:0.9rem; }
+    .hero-highlight{ background: linear-gradient(to right, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .hero-tagline{ font-size:0.97rem; color:var(--muted); max-width:600px; margin-bottom:1.7rem; }
+    .hero-actions{ display:flex; flex-wrap:wrap; gap:0.9rem; margin-bottom:1.7rem; }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      padding: 0.25rem 0.7rem;
-      font-size: 0.72rem;
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--muted);
-      backdrop-filter: blur(12px);
-    }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; border-radius:999px; border:1px solid transparent; padding:0.7rem 1.4rem; font-size:0.86rem; cursor:pointer; transition:all var(--transition-speed) ease; background:transparent; color:var(--text); }
+    .btn-primary{ background: radial-gradient(circle at 0 0, var(--accent), var(--accent-2)); box-shadow:0 18px 40px var(--card-glow-1); }
+    .btn-primary:hover{ transform:translateY(-1px) scale(1.02); box-shadow:0 22px 55px var(--card-glow-1); }
+    .btn-ghost{ border-color: var(--border-subtle); color:var(--muted); background: rgba(15,23,42,0.7); }
+    body[data-theme="light"] .btn-ghost{ background: rgba(255,255,255,0.9); }
+    .btn-ghost:hover{ border-color:var(--accent); color:var(--text); }
 
-    body[data-theme="light"] .badge {
-      background: rgba(248, 250, 252, 0.9);
-    }
+    .hero-meta{ display:flex; flex-wrap:wrap; gap:1.6rem; font-size:0.8rem; color:var(--muted); }
+    .hero-meta strong{ display:block; color:var(--text); margin-bottom:0.15rem; }
 
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, var(--accent-3), #14532d);
-      box-shadow: 0 0 12px var(--accent-3);
-    }
+    /* hero right card */
+    .hero-orbit-card{ position:relative; border-radius:26px; padding:1.6rem 1.5rem 1.4rem; background: linear-gradient(145deg, rgba(15,23,42,0.97), rgba(15,23,42,0.9)); border:1px solid var(--border-subtle); box-shadow:var(--shadow-soft); overflow:hidden; }
+    body[data-theme="light"] .hero-orbit-card { background: linear-gradient(145deg, #ffffff, #e0f2fe); }
+    .hero-orbit-card::before{ content:""; position:absolute; inset:-40%; background: radial-gradient(circle at 0% 0%, var(--card-glow-1), transparent 55%), radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%); opacity:0.45; pointer-events:none; }
 
-    .hero-title {
-      font-size: clamp(2.2rem, 4vw, 3.1rem);
-      line-height: 1.05;
-      margin-bottom: 0.9rem;
-    }
+    .avatar-ring{ width:130px; height:130px; border-radius:999px; margin:0 auto; border:2px solid rgba(148,163,184,0.7); display:grid; place-items:center; position:relative; overflow:hidden; background: radial-gradient(circle at 30% 10%, rgba(248,250,252,0.85), transparent 60%), radial-gradient(circle at 80% 80%, rgba(56,189,248,0.45), transparent 55%); }
+    .avatar-ring::after{ content:""; position:absolute; width:150%; height:150%; border-radius:inherit; border:1px dashed rgba(148,163,184,0.6); animation: slow-spin 26s linear infinite; }
+    @keyframes slow-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .avatar-initials{ position:relative; z-index:1; font-size:2.4rem; font-weight:700; letter-spacing:0.06em; color:#0b1120; }
+    .hero-orbit-caption{ text-align:center; font-size:0.84rem; color:var(--muted); }
+    .hero-orbit-caption strong{ display:block; color:var(--text); font-size:0.92rem; margin-bottom:0.2rem; }
+    .hero-orbit-tags{ display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; margin-top:0.4rem; }
+    .tag-chip{ border-radius:999px; border:1px solid var(--border-subtle); padding:0.2rem 0.6rem; font-size:0.7rem; background: rgba(15,23,42,0.9); color:var(--muted); }
+    body[data-theme="light"] .tag-chip{ background: rgba(255,255,255,0.95); }
+    .hero-orbit-stats{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:0.8rem; margin-top:0.7rem; font-size:0.76rem; }
+    .orbit-stat{ border-radius:14px; border:1px solid var(--border-subtle); background: rgba(15,23,42,0.9); padding:0.55rem; text-align:center; }
+    body[data-theme="light"] .orbit-stat{ background: rgba(255,255,255,0.95); }
+    .orbit-stat span{ display:block; color:var(--muted); } .orbit-stat strong{ display:block; margin-top:0.15rem; color:var(--text); }
 
-    .hero-highlight {
-      background: linear-gradient(to right, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-tagline {
-      font-size: 0.97rem;
-      color: var(--muted);
-      max-width: 600px;
-      margin-bottom: 1.7rem;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.9rem;
-      margin-bottom: 1.7rem;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      padding: 0.7rem 1.4rem;
-      font-size: 0.86rem;
-      cursor: pointer;
-      transition: all var(--transition-speed) ease;
-      background: transparent;
-      color: var(--text);
-    }
-
-    .btn-primary {
-      background: radial-gradient(circle at 0 0, var(--accent), var(--accent-2));
-      box-shadow: 0 18px 40px var(--card-glow-1);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px) scale(1.02);
-      box-shadow: 0 22px 55px var(--card-glow-1);
-    }
-
-    .btn-ghost {
-      border-color: var(--border-subtle);
-      color: var(--muted);
-      background: rgba(15, 23, 42, 0.7);
-    }
-
-    body[data-theme="light"] .btn-ghost {
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--text);
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.6rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .hero-meta strong {
-      display: block;
-      color: var(--text);
-      margin-bottom: 0.15rem;
-    }
-
-    /* Hero right card */
-    .hero-orbit-card {
-      position: relative;
-      border-radius: 26px;
-      padding: 1.6rem 1.5rem 1.4rem;
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.9));
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    body[data-theme="light"] .hero-orbit-card {
-      background: linear-gradient(145deg, #ffffff, #e0f2fe);
-    }
-
-    .hero-orbit-card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 0% 0%, var(--card-glow-1), transparent 55%),
-        radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%);
-      opacity: 0.45;
-      pointer-events: none;
-    }
-
-    .hero-orbit-inner {
-      position: relative;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .avatar-ring {
-      width: 130px;
-      height: 130px;
-      border-radius: 999px;
-      margin: 0 auto;
-      border: 2px solid rgba(148, 163, 184, 0.7);
-      display: grid;
-      place-items: center;
-      position: relative;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 30% 10%, rgba(248, 250, 252, 0.85), transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.45), transparent 55%);
-    }
-
-    .avatar-ring::after {
-      content: "";
-      position: absolute;
-      width: 150%;
-      height: 150%;
-      border-radius: inherit;
-      border: 1px dashed rgba(148, 163, 184, 0.6);
-      animation: slow-spin 26s linear infinite;
-    }
-
-    @keyframes slow-spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .avatar-initials {
-      position: relative;
-      z-index: 1;
-      font-size: 2.4rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: #0b1120;
-    }
-
-    .hero-orbit-caption {
-      text-align: center;
-      font-size: 0.84rem;
-      color: var(--muted);
-    }
-
-    .hero-orbit-caption strong {
-      display: block;
-      color: var(--text);
-      font-size: 0.92rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .hero-orbit-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      justify-content: center;
-      margin-top: 0.4rem;
-    }
-
-    .tag-chip {
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      padding: 0.2rem 0.6rem;
-      font-size: 0.7rem;
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--muted);
-    }
-
-    body[data-theme="light"] .tag-chip {
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    .hero-orbit-stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin-top: 0.7rem;
-      font-size: 0.76rem;
-    }
-
-    .orbit-stat {
-      border-radius: 14px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15, 23, 42, 0.9);
-      padding: 0.55rem;
-      text-align: center;
-    }
-
-    body[data-theme="light"] .orbit-stat {
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    .orbit-stat span {
-      display: block;
-      color: var(--muted);
-    }
-
-    .orbit-stat strong {
-      display: block;
-      margin-top: 0.15rem;
-      color: var(--text);
-    }
-
-    /* Generic grids / cards */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.8rem;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.6rem;
-    }
-
-    .card {
-      position: relative;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-elevated);
-      padding: 1.25rem 1.3rem;
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      font-size: 0.86rem;
-      color: var(--muted);
-      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease, background var(--transition-speed) ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 0 0, var(--card-glow-1), transparent 55%),
-        radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%);
-      opacity: 0.35;
-      pointer-events: none;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
-      border-color: rgba(148, 163, 184, 0.55);
-    }
-
-    .card-title {
-      position: relative;
-      font-size: 0.98rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.35rem;
-    }
-
-    .card-meta {
-      position: relative;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.45rem;
-    }
-
-    .pill-row {
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.55rem;
-    }
-
-    .pill {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      padding: 0.2rem 0.6rem;
-      font-size: 0.72rem;
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--muted);
-    }
-
-    body[data-theme="light"] .pill {
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    /* Simple section wrapper for layout only (no extra background) */
-    .section-panel {
-      margin-top: 1rem;
-      padding: 0;
-      border: none;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-      overflow: visible;
-    }
+    /* grid / cards */
+    .grid-2{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:1.8rem; }
+    .grid-3{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:1.6rem; }
+    .card{ position:relative; border-radius:var(--radius-lg); border:1px solid var(--border-subtle); background:var(--bg-elevated); padding:1.25rem 1.3rem; box-shadow:var(--shadow-soft); overflow:hidden; font-size:0.86rem; color:var(--muted); transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease, background var(--transition-speed) ease; }
+    .card::before{ content:""; position:absolute; inset:-40%; background: radial-gradient(circle at 0 0, var(--card-glow-1), transparent 55%), radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%); opacity:0.35; pointer-events:none; }
+    .card:hover{ transform:translateY(-3px); box-shadow:0 24px 60px rgba(15,23,42,0.9); border-color: rgba(148,163,184,0.55); }
+    .card-title{ position:relative; font-size:0.98rem; font-weight:600; color:var(--text); margin-bottom:0.35rem; }
+    .card-meta{ position:relative; font-size:0.78rem; color:var(--muted); margin-bottom:0.45rem; }
+    .pill-row{ position:relative; display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.55rem; }
+    .pill{ border-radius:999px; border:1px solid rgba(148,163,184,0.6); padding:0.2rem 0.6rem; font-size:0.72rem; background: rgba(15,23,42,0.9); color:var(--muted); }
+    body[data-theme="light"] .pill{ background: rgba(255,255,255,0.95); }
 
     /* SaudAI Chat */
-    #saudai .grid-2 {
-      align-items: flex-start;
-    }
+    #saudai .grid-2{ align-items:flex-start; }
+    .chat-panel{ position:relative; border-radius:var(--radius-lg); border:1px solid var(--border-subtle); background:var(--bg-elevated); box-shadow:var(--shadow-soft); display:flex; flex-direction:column; min-height:320px; overflow:hidden; }
+    .chat-header{ padding:0.85rem 1rem; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:space-between; gap:0.6rem; font-size:0.8rem; }
+    .chat-header-left{ display:flex; align-items:center; gap:0.6rem; }
+    .chat-avatar-mini{ width:30px; height:30px; border-radius:999px; border:1px solid rgba(56,189,248,0.8); background: radial-gradient(circle at 30% 20%, var(--accent), var(--bg)); display:grid; place-items:center; font-size:0.8rem; font-weight:600; color:#e0f2fe; }
+    .chat-status{ font-size:0.74rem; color:var(--muted); }
+    .chat-dot-online{ display:inline-block; width:7px; height:7px; border-radius:999px; background:var(--accent-3); box-shadow:0 0 10px var(--accent-3); margin-right:0.3rem; }
 
-    .chat-panel {
-      position: relative;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-elevated);
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      min-height: 320px;
-      overflow: hidden;
-    }
+    .chat-body{ flex:1; padding:0.8rem 0.9rem; display:flex; flex-direction:column; gap:0.55rem; font-size:0.8rem; overflow-y:auto; scroll-behavior:smooth; }
+    .chat-message{ max-width:88%; padding:0.46rem 0.7rem; border-radius:14px; line-height:1.4; position:relative; word-break:break-word; }
+    .chat-message.user{ align-self:flex-end; background: rgba(56,189,248,0.22); border-bottom-right-radius:4px; color:var(--text); }
+    .chat-message.assistant{ align-self:flex-start; background: rgba(15,23,42,0.92); border:1px solid var(--border-subtle); border-bottom-left-radius:4px; color:var(--muted); }
+    body[data-theme="light"] .chat-message.assistant{ background: rgba(255,255,255,0.96); color:var(--text); }
 
-    .chat-header {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.6rem;
-      font-size: 0.8rem;
-    }
+    .chat-input-bar{ padding:0.7rem 0.8rem; border-top:1px solid var(--border-subtle); display:flex; gap:0.55rem; align-items:center; }
+    .chat-input-bar input{ flex:1; border-radius:999px; border:1px solid rgba(148,163,184,0.7); padding:0.5rem 0.85rem; font-size:0.8rem; background: rgba(15,23,42,0.96); color:var(--text); outline:none; }
+    body[data-theme="light"] .chat-input-bar input{ background:#f9fafb; }
+    .chat-input-bar input::placeholder{ color: rgba(148,163,184,0.9); }
+    .chat-input-bar button{ border-radius:999px; border:none; padding:0.5rem 0.9rem; font-size:0.78rem; cursor:pointer; background: linear-gradient(to right, var(--accent), var(--accent-2)); color:#e0f2fe; white-space:nowrap; }
+    .chat-input-bar button:disabled{ opacity:0.6; cursor:default; transform:none; }
 
-    .chat-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
+    .chat-hint{ font-size:0.76rem; color:var(--muted); margin-top:0.7rem; }
 
-    .chat-avatar-mini {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      border: 1px solid rgba(56, 189, 248, 0.8);
-      background: radial-gradient(circle at 30% 20%, var(--accent), var(--bg));
-      display: grid;
-      place-items: center;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #e0f2fe;
-    }
-
-    .chat-status {
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
-
-    .chat-dot-online {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent-3);
-      box-shadow: 0 0 10px var(--accent-3);
-      margin-right: 0.3rem;
-    }
-
-    .chat-body {
-      flex: 1;
-      padding: 0.8rem 0.9rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      font-size: 0.8rem;
-      overflow-y: auto;
-    }
-
-    .chat-message {
-      max-width: 88%;
-      padding: 0.46rem 0.7rem;
-      border-radius: 14px;
-      line-height: 1.4;
-      position: relative;
-    }
-
-    .chat-message.user {
-      align-self: flex-end;
-      background: rgba(56, 189, 248, 0.22);
-      border-bottom-right-radius: 4px;
-    }
-
-    .chat-message.assistant {
-      align-self: flex-start;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid var(--border-subtle);
-      border-bottom-left-radius: 4px;
-      color: var(--muted);
-    }
-
-    body[data-theme="light"] .chat-message.assistant {
-      background: rgba(255, 255, 255, 0.96);
-    }
-
-    .chat-input-bar {
-      padding: 0.7rem 0.8rem;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      gap: 0.55rem;
-    }
-
-    .chat-input-bar input {
-      flex: 1;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      padding: 0.5rem 0.85rem;
-      font-size: 0.8rem;
-      background: rgba(15, 23, 42, 0.96);
-      color: var(--text);
-      outline: none;
-    }
-
-    body[data-theme="light"] .chat-input-bar input {
-      background: #f9fafb;
-    }
-
-    .chat-input-bar input::placeholder {
-      color: rgba(148, 163, 184, 0.9);
-    }
-
-    .chat-input-bar button {
-      border-radius: 999px;
-      border: none;
-      padding: 0.5rem 0.9rem;
-      font-size: 0.78rem;
-      cursor: pointer;
-      background: linear-gradient(to right, var(--accent), var(--accent-2));
-      color: #e0f2fe;
-      white-space: nowrap;
-    }
-
-    .chat-input-bar button:disabled {
-      opacity: 0.6;
-      cursor: default;
-    }
-
-    .chat-hint {
-      font-size: 0.76rem;
-      color: var(--muted);
-      margin-top: 0.7rem;
-    }
+    .status-line { font-size:0.82rem; color:var(--muted); display:flex; gap:0.6rem; align-items:center; }
 
     /* Contact */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 1.8rem;
-    }
+    .contact-grid{ display:grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap:1.8rem; }
+    .contact-card, .contact-form{ border-radius:var(--radius-lg); border:1px solid var(--border-subtle); background:var(--bg-elevated); padding:1.4rem 1.5rem; box-shadow:var(--shadow-soft); font-size:0.86rem; color:var(--muted); }
 
-    .contact-card, .contact-form {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-elevated);
-      padding: 1.4rem 1.5rem;
-      box-shadow: var(--shadow-soft);
-      font-size: 0.86rem;
-      color: var(--muted);
-    }
+    label{ display:block; font-size:0.78rem; margin-bottom:0.2rem; color:var(--muted); }
+    input[type="text"], input[type="email"], textarea { width:100%; border-radius:12px; border:1px solid rgba(148,163,184,0.7); padding:0.48rem 0.75rem; font-size:0.82rem; background: rgba(15,23,42,0.96); color:var(--text); outline:none; }
+    body[data-theme="light"] input[type="text"], body[data-theme="light"] input[type="email"], body[data-theme="light"] textarea { background:#f9fafb; }
+    textarea { min-height:120px; resize:vertical; }
+    input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.9); }
 
-    .contact-form .form-row {
-      margin-bottom: 0.85rem;
-    }
+    footer { max-width:1140px; margin:0 auto; padding:1.7rem 1.4rem 2.4rem; font-size:0.78rem; color:var(--muted); border-top:1px solid rgba(31,41,55,0.7); display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
 
-    label {
-      display: block;
-      font-size: 0.78rem;
-      margin-bottom: 0.2rem;
-      color: var(--muted);
-    }
+    .theme-toggle{ position:fixed; right:1.4rem; bottom:1.6rem; z-index:60; }
+    .theme-toggle button{ border-radius:999px; border:1px solid var(--border-subtle); padding:0.45rem 0.8rem; font-size:0.8rem; display:inline-flex; align-items:center; gap:0.35rem; cursor:pointer; background:var(--bg-elevated); color:var(--muted); box-shadow:0 14px 30px rgba(15,23,42,0.8); transition:all var(--transition-speed) ease; }
+    .theme-toggle button:hover{ transform:translateY(-1px); border-color:var(--accent); color:var(--text); }
+    .theme-toggle-icon{ font-size:0.9rem; }
 
-    input[type="text"],
-    input[type="email"],
-    textarea {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      padding: 0.48rem 0.75rem;
-      font-size: 0.82rem;
-      background: rgba(15, 23, 42, 0.96);
-      color: var(--text);
-      outline: none;
-    }
-
-    body[data-theme="light"] input[type="text"],
-    body[data-theme="light"] input[type="email"],
-    body[data-theme="light"] textarea {
-      background: #f9fafb;
-    }
-
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: rgba(148, 163, 184, 0.9);
-    }
-
-    .contact-links {
-      margin-top: 0.8rem;
-      display: grid;
-      gap: 0.35rem;
-      font-size: 0.82rem;
-    }
-
-    .contact-links a {
-      color: var(--accent);
-    }
-
-    footer {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 1.7rem 1.4rem 2.4rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-      border-top: 1px solid rgba(31, 41, 55, 0.7);
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    /* Theme toggle floating button */
-    .theme-toggle {
-      position: fixed;
-      right: 1.4rem;
-      bottom: 1.6rem;
-      z-index: 60;
-    }
-
-    .theme-toggle button {
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      padding: 0.45rem 0.8rem;
-      font-size: 0.8rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      cursor: pointer;
-      background: var(--bg-elevated);
-      color: var(--muted);
-      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.8);
-      transition: all var(--transition-speed) ease;
-    }
-
-    .theme-toggle button:hover {
-      transform: translateY(-1px);
-      border-color: var(--accent);
-      color: var(--text);
-    }
-
-    .theme-toggle-icon {
-      font-size: 0.9rem;
-    }
+    /* Connection indicator */
+    .conn-ok { color: var(--accent-3); }
+    .conn-bad { color: #f97316; }
 
     /* Responsive */
     @media (max-width: 900px) {
-      #hero,
-      .grid-2,
-      .contact-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .hero-orbit-stats {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .nav-inner {
-        flex-direction: column;
-        justify-content: center;
-        height: auto;
-        padding: 0.6rem 1.4rem 0.9rem;
-        gap: 0.5rem;
-      }
-
-      nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
+      #hero, .grid-2, .contact-grid { grid-template-columns: minmax(0,1fr); }
+      .hero-orbit-stats { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .nav-inner { flex-direction:column; justify-content:center; height:auto; padding:0.6rem 1.4rem 0.9rem; gap:0.5rem; }
+      nav ul { flex-wrap:wrap; justify-content:center; }
     }
-
     @media (max-width: 700px) {
-      .grid-3 {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      section {
-        padding: 3.2rem 0;
-      }
-
-      .theme-toggle {
-        right: 1rem;
-        bottom: 1rem;
-      }
+      .grid-3 { grid-template-columns: minmax(0,1fr); }
+      section { padding:3.2rem 0; }
+      .theme-toggle { right:1rem; bottom:1rem; }
     }
   </style>
 </head>
 
 <body data-theme="dark">
   <!-- THEME TOGGLE -->
-  <div class="theme-toggle">
-    <button id="theme-toggle-btn" type="button">
+  <div class="theme-toggle" aria-hidden="false">
+    <button id="theme-toggle-btn" type="button" aria-pressed="false" aria-label="Toggle theme">
       <span class="theme-toggle-icon" id="theme-icon">🌙</span>
       <span id="theme-label">Dark mode</span>
     </button>
@@ -872,13 +223,13 @@
   <header>
     <div class="nav-inner">
       <div class="logo">
-        <div class="logo-orbit"></div>
+        <div class="logo-orbit" aria-hidden="true"></div>
         <div>
           <div class="logo-text-main">SAUD REHMAN</div>
           <div class="logo-text-sub">Aerospace · Defence · Renewables · AI</div>
         </div>
       </div>
-      <nav>
+      <nav aria-label="Main navigation">
         <ul>
           <li><a href="#hero">Home</a></li>
           <li><a href="#about">About</a></li>
@@ -898,12 +249,10 @@
       <div>
         <div class="badge-row">
           <div class="badge">
-            <span class="badge-dot"></span>
+            <span class="badge-dot" aria-hidden="true"></span>
             Open to aerospace, defence & renewable collaborations
           </div>
-          <div class="badge">
-            Technical Marketing · Renewable Energy · IoT & AI Products
-          </div>
+          <div class="badge">Technical Marketing · Renewable Energy · IoT & AI Products</div>
         </div>
 
         <h1 class="hero-title">
@@ -917,7 +266,7 @@
         </p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="resume.pdf" target="_blank">View Resume</a>
+          <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">View Resume</a>
           <a class="btn btn-ghost" href="#saudai">Talk with SaudAI</a>
         </div>
 
@@ -938,7 +287,7 @@
       </div>
 
       <div>
-        <div class="hero-orbit-card">
+        <div class="hero-orbit-card" role="img" aria-label="Avatar and summary card">
           <div class="hero-orbit-inner">
             <div class="avatar-ring">
               <div class="avatar-initials">SR</div>
@@ -946,14 +295,14 @@
             <div class="hero-orbit-caption">
               <strong>Aerospace · Defence · Renewables</strong>
               Technical marketing, energy engineering and product strategy combined.
-              <div class="hero-orbit-tags">
+              <div class="hero-orbit-tags" aria-hidden="true">
                 <span class="tag-chip">Aerospace & Defence</span>
                 <span class="tag-chip">Renewable Energy</span>
                 <span class="tag-chip">IoT & AI</span>
                 <span class="tag-chip">Technical Sales</span>
               </div>
             </div>
-            <div class="hero-orbit-stats">
+            <div class="hero-orbit-stats" aria-hidden="true">
               <div class="orbit-stat">
                 <span>Domains</span>
                 <strong>Aero · Energy</strong>
@@ -1190,66 +539,36 @@
         <div class="card">
           <div class="card-title">Foundations of Project Management</div>
           <div class="card-meta">Coursera</div>
-          <p>
-            Core project planning, execution and stakeholder communication skills.
-          </p>
-          <p style="margin-top:0.4rem;">
-            <a href="https://coursera.org/share/2531594ffb1426329db07647d88997b5" target="_blank">
-              View certificate →
-            </a>
-          </p>
+          <p>Core project planning, execution and stakeholder communication skills.</p>
+          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/2531594ffb1426329db07647d88997b5" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
         <div class="card">
           <div class="card-title">Excel Skills for Business</div>
           <div class="card-meta">Coursera</div>
-          <p>
-            Practical Excel skills for analysis, dashboards and decision support in projects and sales.
-          </p>
-          <p style="margin-top:0.4rem;">
-            <a href="https://coursera.org/share/1cd03e814f56f6e035ed964b8240f07a" target="_blank">
-              View certificate →
-            </a>
-          </p>
+          <p>Practical Excel skills for analysis, dashboards and decision support in projects and sales.</p>
+          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/1cd03e814f56f6e035ed964b8240f07a" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
         <div class="card">
           <div class="card-title">Microsoft Copilot Essentials</div>
           <div class="card-meta">Coursera</div>
-          <p>
-            Using Copilot and AI tools to accelerate documentation, analysis and reporting.
-          </p>
-          <p style="margin-top:0.4rem;">
-            <a href="https://coursera.org/share/a1a2d7d752979d200851db6be77ea61b" target="_blank">
-              View certificate →
-            </a>
-          </p>
+          <p>Using Copilot and AI tools to accelerate documentation, analysis and reporting.</p>
+          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/a1a2d7d752979d200851db6be77ea61b" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
         <div class="card">
           <div class="card-title">Digital Marketing & E-commerce</div>
           <div class="card-meta">Coursera</div>
-          <p>
-            Understanding funnels, positioning and campaign strategies that now support technical marketing.
-          </p>
-          <p style="margin-top:0.4rem;">
-            <a href="https://coursera.org/share/3f1f8227cd709d202f87f035fc4ee0ce" target="_blank">
-              View certificate →
-            </a>
-          </p>
+          <p>Understanding funnels, positioning and campaign strategies that now support technical marketing.</p>
+          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/3f1f8227cd709d202f87f035fc4ee0ce" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
         <div class="card">
           <div class="card-title">Marketing Benefits vs. Features</div>
           <div class="card-meta">Coursera</div>
-          <p>
-            Translating engineering features into outcomes that matter to decision-makers.
-          </p>
-          <p style="margin-top:0.4rem;">
-            <a href="https://coursera.org/share/42a49734b8a84ec0a9a1c6f65a76c83f" target="_blank">
-              View certificate →
-            </a>
-          </p>
+          <p>Translating engineering features into outcomes that matter to decision-makers.</p>
+          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/42a49734b8a84ec0a9a1c6f65a76c83f" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
       </div>
     </section>
@@ -1264,26 +583,27 @@
       </p>
 
       <div class="grid-2">
-        <div class="chat-panel">
+        <div class="chat-panel" role="region" aria-labelledby="saudai-title" aria-live="polite">
           <div class="chat-header">
             <div class="chat-header-left">
-              <div class="chat-avatar-mini">SR</div>
+              <div class="chat-avatar-mini" aria-hidden="true">SR</div>
               <div>
                 <div style="font-size:0.8rem;font-weight:500;">SaudAI</div>
-                <div class="chat-status"><span class="chat-dot-online"></span>Online · Powered by ChatGPT</div>
+                <div class="chat-status" id="saudai-connection"><span class="chat-dot-online"></span>Online · Powered by SaudAI (DeepSeek)</div>
               </div>
             </div>
+            <div class="status-line" id="status-line" aria-hidden="true"></div>
           </div>
 
-          <div class="chat-body" id="chat-body">
-            <div class="chat-message assistant">
+          <div class="chat-body" id="chat-body" tabindex="0">
+            <div class="chat-message assistant" role="status">
               Salam! I’m SaudAI — an AI version of Saud. Ask me about my experience, projects, tools I use, or career advice in engineering, renewables, IoT and technical marketing.
             </div>
           </div>
 
-          <div class="chat-input-bar">
-            <input id="chat-input" type="text" placeholder="Ask SaudAI anything..." />
-            <button id="chat-send">Send</button>
+          <div class="chat-input-bar" role="form" aria-label="SaudAI chat input">
+            <input id="chat-input" type="text" placeholder="Ask SaudAI anything..." aria-label="Type your message to SaudAI" />
+            <button id="chat-send" aria-label="Send message">Send</button>
           </div>
         </div>
 
@@ -1298,13 +618,9 @@
               <li>“Explain your wind forecasting final year project.”</li>
               <li>“How would you approach a C&I solar client?”</li>
             </ul>
-            <p style="margin-top:0.7rem;">
-              I’ll respond as if I’m Saud, in first person, keeping answers practical and honest.
-            </p>
+            <p style="margin-top:0.7rem;">I’ll respond as if I’m Saud, in first person, keeping answers practical and honest.</p>
           </div>
-          <p class="chat-hint">
-            Note: This is a demo chat UI. In production, it connects to a backend route that securely uses the OpenAI API.
-          </p>
+          <p class="chat-hint">Note: This demo connects to your local SaudAI backend (DeepSeek). If you host the backend remotely, update the endpoint below accordingly.</p>
         </div>
       </div>
     </section>
@@ -1342,12 +658,8 @@
           <div class="contact-links">
             <a href="mailto:saudrehman585@icloud.com">saudrehman585@icloud.com</a>
             <a href="tel:+923340007283">+92 334 000 7283</a>
-            <a href="https://www.linkedin.com/in/saud-rehman585" target="_blank" rel="noreferrer">
-              LinkedIn · /saud-rehman585
-            </a>
-            <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" rel="noreferrer">
-              GitHub · @YOUR_GITHUB_USERNAME
-            </a>
+            <a href="https://www.linkedin.com/in/saud-rehman585" target="_blank" rel="noreferrer">LinkedIn · /saud-rehman585</a>
+            <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" rel="noreferrer">GitHub · @YOUR_GITHUB_USERNAME</a>
           </div>
         </div>
       </div>
@@ -1356,14 +668,18 @@
 
   <footer>
     <div>© <span id="year"></span> Saud Rehman. All rights reserved.</div>
-    <div>Designed with an Apple-inspired minimal theme & powered by SaudAI.</div>
+    <div>Designed with an Apple-inspired minimal theme & powered by SaudAI (DeepSeek).</div>
   </footer>
 
   <script>
-    // Year
-    document.getElementById("year").textContent = new Date().getFullYear();
+    // ====== Configuration ======
+    // When testing locally use http://localhost:3000
+    // If you deploy the backend to Render or elsewhere, replace this URL with your public API.
+    const SAUDAI_API_URL = "http://localhost:3000/api/saudai";
+    const CONNECTION_CHECK_URL = "http://localhost:3000/"; // used for quick health-check
 
-    // THEME TOGGLE
+    // ====== UI elements ======
+    document.getElementById("year").textContent = new Date().getFullYear();
     const bodyEl = document.body;
     const themeBtn = document.getElementById("theme-toggle-btn");
     const themeIcon = document.getElementById("theme-icon");
@@ -1371,6 +687,7 @@
 
     function applyTheme(theme) {
       bodyEl.setAttribute("data-theme", theme);
+      themeBtn.setAttribute("aria-pressed", theme === "light");
       if (theme === "light") {
         themeIcon.textContent = "☀️";
         themeLabel.textContent = "Light mode";
@@ -1390,49 +707,107 @@
       localStorage.setItem("saud-theme", next);
     });
 
-    // SAUDAI CHAT
-   const SAUDAI_API_URL = "https://myfirstwebsite-ywlm.onrender.com/api/saudai";
-
-
-
+    // ====== SaudAI Chat logic ======
     const chatBody = document.getElementById("chat-body");
     const chatInput = document.getElementById("chat-input");
     const chatSend = document.getElementById("chat-send");
+    const statusLine = document.getElementById("status-line");
+    const saudaiConnection = document.getElementById("saudai-connection");
+
+    // small helper to create messages
+    function appendMessage(role, text) {
+      const div = document.createElement("div");
+      div.className = "chat-message " + (role === "user" ? "user" : "assistant");
+      div.textContent = text;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      return div;
+    }
+
+    function setConnectionStatus(ok) {
+      if (ok) {
+        saudaiConnection.innerHTML = '<span class="chat-dot-online"></span>Online · Powered by SaudAI (DeepSeek)';
+        statusLine.textContent = "Connected to local SaudAI";
+        statusLine.className = "status-line conn-ok";
+      } else {
+        saudaiConnection.innerHTML = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f97316;margin-right:6px;"></span>Backend unreachable';
+        statusLine.textContent = "SaudAI backend is not connected or unreachable.";
+        statusLine.className = "status-line conn-bad";
+      }
+    }
+
+    // quick health check on load
+    async function checkBackend() {
+      try {
+        const res = await fetch(CONNECTION_CHECK_URL, { method: "GET", cache: "no-store", mode: "cors" });
+        if (res.ok) { setConnectionStatus(true); return true; }
+      } catch (err) { /* ignore */ }
+      setConnectionStatus(false);
+      return false;
+    }
+
+    // call backend with timeout
+    async function postWithTimeout(url, body, timeout = 20000) {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+        clearTimeout(id);
+        return res;
+      } catch (err) {
+        clearTimeout(id);
+        throw err;
+      }
+    }
 
     async function sendMessage() {
       const text = chatInput.value.trim();
       if (!text) return;
 
-      const userMsg = document.createElement("div");
-      userMsg.className = "chat-message user";
-      userMsg.textContent = text;
-      chatBody.appendChild(userMsg);
-      chatBody.scrollTop = chatBody.scrollHeight;
-
+      // UI: add user message
+      appendMessage("user", text);
       chatInput.value = "";
-      chatInput.focus();
+      chatInput.disabled = true;
       chatSend.disabled = true;
 
-      const thinking = document.createElement("div");
-      thinking.className = "chat-message assistant";
-      thinking.textContent = "SaudAI is thinking...";
-      chatBody.appendChild(thinking);
-      chatBody.scrollTop = chatBody.scrollHeight;
+      // add thinking placeholder
+      const thinking = appendMessage("assistant", "SaudAI is thinking...");
+
+      // ensure backend is reachable
+      const backendOk = await checkBackend();
+      if (!backendOk) {
+        thinking.textContent = "Error: SaudAI backend is not connected yet or unavailable.";
+        chatInput.disabled = false;
+        chatSend.disabled = false;
+        return;
+      }
 
       try {
-        const res = await fetch(SAUDAI_API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text }),
-        });
-
-        const data = await res.json();
-        thinking.textContent = data.reply || "I couldn’t generate a response right now, please try again.";
+        const res = await postWithTimeout(SAUDAI_API_URL, { message: text }, 25000);
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          thinking.textContent = `Model server error (${res.status})${txt ? ": " + txt : ""}`;
+        } else {
+          const data = await res.json().catch(() => null);
+          const reply = data?.reply ?? "I couldn’t generate a response right now. Try again.";
+          thinking.textContent = reply;
+        }
       } catch (err) {
-        console.error(err);
-        thinking.textContent = "Error: SaudAI backend is not connected yet or unavailable.";
+        console.error("Chat error:", err);
+        if (err.name === "AbortError") {
+          thinking.textContent = "Request timed out. Try again.";
+        } else {
+          thinking.textContent = "Error: SaudAI backend is not connected yet or unavailable.";
+        }
       } finally {
+        chatInput.disabled = false;
         chatSend.disabled = false;
+        chatInput.focus();
         chatBody.scrollTop = chatBody.scrollHeight;
       }
     }
@@ -1444,6 +819,23 @@
         sendMessage();
       }
     });
+
+    // initial backend check
+    (async () => {
+      await checkBackend();
+    })();
+
+    // Accessibility: focus chat body when new messages appended (keeps screenreader happy)
+    const observer = new MutationObserver(() => {
+      // keep focus on chat input normally; if user isn't typing, move focus briefly
+      // (This is minimal and avoids unexpected focus jumps.)
+    });
+    observer.observe(chatBody, { childList: true });
+
+    // Allow linking to chat via URL: auto-scroll if #saudai present
+    if (location.hash === "#saudai") {
+      document.querySelector("#saudai")?.scrollIntoView();
+    }
   </script>
 </body>
 </html>
