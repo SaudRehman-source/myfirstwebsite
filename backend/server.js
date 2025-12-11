@@ -1,23 +1,24 @@
+// server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fetch from "node-fetch"; // important for calling Ollama API
 
 dotenv.config();
+
+let fetchImpl = global.fetch;
+try {
+  // If running Node < 18 and you installed node-fetch v2
+  if (!fetchImpl) fetchImpl = (await import("node-fetch")).default;
+} catch (e) {
+  // ignore - global fetch exists on Node >= 18
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Allow frontend access
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-// SaudAI system prompt
 const SAUDAI_INSTRUCTIONS = `
 You are SaudAI, an AI version of Saud Rehman.
 
@@ -37,48 +38,44 @@ Guidelines:
 - When asked for advice (career, learning, tools), give practical, step-by-step suggestions.
 `;
 
-// 🧠 DeepSeek via Ollama API
 app.post("/api/saudai", async (req, res) => {
   try {
     const { message } = req.body || {};
-    console.log("💬 SaudAI request:", message);
-
     if (!message || typeof message !== "string") {
       return res.status(400).json({ reply: "I need a message string to respond to." });
     }
 
-    // 🔻 Send to DeepSeek (running locally in Ollama)
-    const ollamaResponse = await fetch("http://localhost:11434/api/chat", {
+    const resp = await fetchImpl("http://localhost:11434/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "deepseek-r1:8b", // << YOUR MODEL HERE
+        model: "deepseek-r1:8b",
         messages: [
           { role: "system", content: SAUDAI_INSTRUCTIONS },
-          { role: "user", content: message },
-        ],
-      }),
+          { role: "user", content: message }
+        ]
+      })
     });
 
-    const data = await ollamaResponse.json();
+    if (!resp.ok) {
+      const text = await resp.text();
+      console.error("Ollama error:", resp.status, text);
+      return res.status(502).json({ reply: "Model server error: " + resp.status });
+    }
 
-    // DeepSeek's response format typically returns:
-    // data.message.content
-    const reply = data?.message?.content || "I couldn't generate a response right now.";
-
+    const data = await resp.json();
+    // Ollama returns data.message.content (string). Fallback if different.
+    const reply = data?.message?.content ?? data?.output?.[0]?.content?.[0]?.text ?? JSON.stringify(data);
     res.json({ reply });
   } catch (err) {
     console.error("SaudAI DeepSeek error:", err);
     res.status(500).json({
-      reply: "There was an error talking to the DeepSeek model. Make sure Ollama is running.",
+      reply: "There was an error talking to the DeepSeek model. Make sure Ollama is running."
     });
   }
 });
 
-// Health check
-app.get("/", (req, res) => {
-  res.send("SaudAI (DeepSeek) backend is running.");
-});
+app.get("/", (req, res) => res.send("SaudAI (DeepSeek) backend is running."));
 
 app.listen(PORT, () => {
   console.log(`SaudAI backend (DeepSeek) listening on port ${PORT}`);
