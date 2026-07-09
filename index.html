@@ -4,218 +4,372 @@
   <meta charset="UTF-8" />
   <title>Saud Rehman | SaudAI Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --transition-speed: 0.25s;
-      --radius-lg: 20px;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.75);
+      --transition-speed: 0.3s;
+      --radius: 14px;
+      --font-display: "Space Grotesk", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+      --font-body: "Space Grotesk", system-ui, sans-serif;
     }
 
-    /* DARK THEME (default) */
+    /* ============ DARK THEME (default) ============ */
     body[data-theme="dark"] {
-      --bg: #020617;
-      --bg-alt: #050819;
-      --bg-elevated: rgba(15, 23, 42, 0.9);
-      --border-subtle: rgba(148, 163, 184, 0.3);
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #38bdf8;
-      --accent-2: #a855f7;
-      --accent-3: #22c55e;
-      --card-glow-1: rgba(56, 189, 248, 0.25);
-      --card-glow-2: rgba(168, 85, 247, 0.25);
-
-      background:
-        radial-gradient(circle at 50% -25%, rgba(37, 99, 235, 0.45), transparent 60%),
-        #020617;
+      --void: #04050a;
+      --void-alt: #070912;
+      --panel: rgba(14, 17, 30, 0.55);
+      --panel-solid: #0b0e19;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --text: #f3f5fa;
+      --muted: #9398ad;
+      --blue: #5b8def;
+      --violet: #9b7bff;
+      --gold: #e8c073;
+      --green: #4fd1a5;
+      --glow-blue: 0 0 40px rgba(91, 141, 239, 0.25);
+      --glow-gold: 0 0 30px rgba(232, 192, 115, 0.2);
+      --star-opacity: 1;
+      background: var(--void);
     }
 
-    /* LIGHT THEME */
+    /* ============ LIGHT THEME ============ */
     body[data-theme="light"] {
-      --bg: #f9fafb;
-      --bg-alt: #edf2ff;
-      --bg-elevated: #ffffff;
-      --border-subtle: rgba(148, 163, 184, 0.3);
-      --text: #0f172a;
-      --muted: #6b7280;
-      --accent: #2563eb;
-      --accent-2: #a855f7;
-      --accent-3: #16a34a;
-      --card-glow-1: rgba(37, 99, 235, 0.18);
-      --card-glow-2: rgba(168, 85, 247, 0.18);
-
-      background:
-        radial-gradient(circle at 50% -30%, rgba(199, 210, 254, 0.95), transparent 60%),
-        linear-gradient(to bottom, #f9fafb 0%, #ffffff 60%);
+      --void: #f6f7fb;
+      --void-alt: #eef1f8;
+      --panel: rgba(255, 255, 255, 0.7);
+      --panel-solid: #ffffff;
+      --border: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.18);
+      --text: #10131f;
+      --muted: #5a6178;
+      --blue: #2f5fd6;
+      --violet: #7c4fe0;
+      --gold: #b3821f;
+      --green: #14966a;
+      --glow-blue: 0 0 40px rgba(47, 95, 214, 0.12);
+      --glow-gold: 0 0 30px rgba(179, 130, 31, 0.1);
+      --star-opacity: 0.35;
+      background: var(--void);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-      font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-body);
       color: var(--text);
-      background: var(--bg);
+      background: var(--void);
       scroll-behavior: smooth;
       transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ---- starfield canvas + nebula glow backdrop ---- */
+    #starfield { position: fixed; inset: 0; z-index: -3; opacity: var(--star-opacity); transition: opacity var(--transition-speed) ease; }
+
+    .nebula { position: fixed; z-index: -2; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .nebula-1 {
+      width: 640px; height: 640px; top: -220px; left: -160px;
+      background: radial-gradient(circle, rgba(91,141,239,0.35), transparent 70%);
+      animation: drift-1 26s ease-in-out infinite;
+    }
+    .nebula-2 {
+      width: 560px; height: 560px; top: 30%; right: -220px;
+      background: radial-gradient(circle, rgba(155,123,255,0.28), transparent 70%);
+      animation: drift-2 32s ease-in-out infinite;
+    }
+    .nebula-3 {
+      width: 480px; height: 480px; bottom: -180px; left: 30%;
+      background: radial-gradient(circle, rgba(232,192,115,0.16), transparent 70%);
+      animation: drift-3 38s ease-in-out infinite;
+    }
+    @keyframes drift-1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(60px, 80px) scale(1.08); } }
+    @keyframes drift-2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-70px, 50px) scale(1.1); } }
+    @keyframes drift-3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px, -60px) scale(1.06); } }
+
+    body[data-theme="light"] .nebula { opacity: 0.5; }
+
+    /* ---- shooting stars ---- */
+    .shooting-star {
+      position: fixed; top: 0; left: 0; width: 2px; height: 2px; z-index: -1; pointer-events: none;
+      border-radius: 999px; background: #fff; opacity: 0;
+      box-shadow: 0 0 6px 1px rgba(255,255,255,0.7);
+    }
+    .shooting-star::before {
+      content: ""; position: absolute; top: 50%; right: 0; width: 90px; height: 1px; transform: translateY(-50%);
+      background: linear-gradient(to left, rgba(255,255,255,0.85), transparent);
+    }
+    .shoot-1 { top: 12%; left: -5%; animation: shoot-1 7s linear infinite; animation-delay: 1s; }
+    .shoot-2 { top: 28%; left: -5%; animation: shoot-2 9s linear infinite; animation-delay: 4.5s; }
+    .shoot-3 { top: 55%; left: -5%; animation: shoot-3 11s linear infinite; animation-delay: 7.5s; }
+    @keyframes shoot-1 { 0% { opacity:0; transform: translate(0,0) rotate(18deg);} 3% { opacity:1; } 14% { opacity:0; transform: translate(60vw, 22vh) rotate(18deg);} 100% { opacity:0; } }
+    @keyframes shoot-2 { 0% { opacity:0; transform: translate(0,0) rotate(22deg);} 3% { opacity:1; } 16% { opacity:0; transform: translate(70vw, 32vh) rotate(22deg);} 100% { opacity:0; } }
+    @keyframes shoot-3 { 0% { opacity:0; transform: translate(0,0) rotate(14deg);} 3% { opacity:1; } 13% { opacity:0; transform: translate(55vw, 15vh) rotate(14deg);} 100% { opacity:0; } }
+
+    body[data-theme="light"] .shooting-star { opacity: 0 !important; animation: none !important; }
+
+    /* ---- scroll-linked background scenery (parallax) ---- */
+    .scenery { position: absolute; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease; will-change: transform; }
+    .scenery.in-view { opacity: 1; }
+
+    .bg-planet {
+      top: 6%; right: -140px; width: 340px; height: 340px; border-radius: 50%;
+      background: radial-gradient(circle at 32% 30%, rgba(232,192,115,0.55), rgba(91,141,239,0.25) 55%, transparent 75%);
+      box-shadow: inset -30px -20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(91,141,239,0.15);
+    }
+    .bg-planet::after {
+      content: ""; position: absolute; inset: -18%; border-radius: 50%;
+      border: 1px solid rgba(232,192,115,0.25); transform: rotate(-18deg);
+    }
+
+    .bg-orbit-ring {
+      top: 4%; left: -180px; width: 460px; height: 460px; border-radius: 50%;
+      border: 1px dashed rgba(255,255,255,0.14);
+    }
+    .bg-orbit-ring::before {
+      content: ""; position: absolute; inset: 60px; border-radius: 50%; border: 1px solid rgba(155,123,255,0.16);
+    }
+    .bg-orbit-ring .orbit-dot {
+      position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 12px var(--blue);
+      top: -3.5px; left: 50%; margin-left: -3.5px;
+      animation: orbit-spin 14s linear infinite;
+      transform-origin: 0px 230px;
+    }
+    @keyframes orbit-spin { to { transform: rotate(360deg); } }
+
+    .bg-rocket { top: 10%; right: 4%; width: 46px; height: 46px; }
+    .bg-rocket .drift-inner { display:block; animation: rocket-drift 16s ease-in-out infinite; }
+    @keyframes rocket-drift { 0%,100% { transform: translate(0,0) rotate(-38deg);} 50% { transform: translate(-40px,-60px) rotate(-32deg);} }
+
+    .bg-satellite { top: 8%; left: 6%; width: 40px; height: 40px; }
+    .bg-satellite .drift-inner { display:block; animation: sat-drift 20s ease-in-out infinite; }
+    @keyframes sat-drift { 0%,100% { transform: translate(0,0) rotate(0deg);} 50% { transform: translate(50px, 40px) rotate(20deg);} }
+
+    .bg-radar { top: 8%; left: 50%; width: 320px; height: 320px; margin-left: -160px; }
+    .bg-radar .ring { position:absolute; inset:0; border-radius:50%; border:1px solid rgba(91,141,239,0.3); animation: radar-ping 3.6s ease-out infinite; }
+    .bg-radar .ring:nth-child(2) { animation-delay: 1.2s; }
+    .bg-radar .ring:nth-child(3) { animation-delay: 2.4s; }
+    @keyframes radar-ping { 0% { transform: scale(0.3); opacity: 0.7; } 100% { transform: scale(1); opacity: 0; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .shooting-star, .bg-rocket, .bg-satellite, .orbit-dot, .bg-radar .ring { animation: none !important; }
+    }
+    @media (max-width: 900px) {
+      .bg-planet, .bg-orbit-ring, .bg-rocket, .bg-satellite, .bg-radar { display: none; }
     }
 
     a { color: inherit; text-decoration: none; }
+    ::selection { background: var(--blue); color: #fff; }
+
+    /* ============ HEADER ============ */
     header {
       position: sticky; top: 0; z-index: 50;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.6));
-      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(20px);
+      background: linear-gradient(to bottom, rgba(4,5,10,0.85), rgba(4,5,10,0.4));
+      border-bottom: 1px solid var(--border);
       transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
     }
     body[data-theme="light"] header {
-      background: linear-gradient(to bottom, rgba(255,255,255,0.96), rgba(248,250,252,0.9));
+      background: linear-gradient(to bottom, rgba(246,247,251,0.9), rgba(246,247,251,0.55));
     }
 
-    .nav-inner { max-width: 1140px; margin: 0 auto; height: 68px; display:flex; align-items:center; justify-content:space-between; padding: 0 1.4rem; }
-    .logo { display:flex; align-items:center; gap:0.7rem; }
-    .logo-orbit { width:36px; height:36px; border-radius:999px; background: conic-gradient(from 220deg, var(--accent), var(--accent-2), var(--accent), var(--accent-3)); position:relative; box-shadow: 0 0 22px var(--card-glow-1); }
-    .logo-orbit::after { content:""; position:absolute; inset:7px; border-radius:inherit; background: radial-gradient(circle at 30% 20%, #ffffff, #0f172a); opacity:0.9; }
-    .logo-text-main{ font-size:0.98rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; }
-    .logo-text-sub{ font-size:0.7rem; color:var(--muted); }
+    .nav-inner { max-width: 1180px; margin: 0 auto; height: 76px; display:flex; align-items:center; justify-content:space-between; padding: 0 1.6rem; }
+    .logo { display:flex; align-items:center; gap:0.8rem; }
+    .logo-orbit {
+      width:38px; height:38px; border-radius:999px; position:relative;
+      background: radial-gradient(circle at 32% 28%, var(--gold), transparent 55%), radial-gradient(circle at 70% 70%, var(--blue), transparent 60%);
+      border: 1px solid var(--border-strong);
+    }
+    .logo-orbit::before { content:""; position:absolute; inset:-6px; border-radius:inherit; border: 1px solid rgba(155,123,255,0.35); animation: slow-spin 40s linear infinite; }
+    @keyframes slow-spin { to { transform: rotate(360deg); } }
 
-    nav ul { display:flex; gap:1rem; list-style:none; font-size:0.84rem; align-items:center; }
-    nav a { padding:0.3rem 0.75rem; border-radius:999px; color:var(--muted); border:1px solid transparent; transition:all var(--transition-speed) ease;}
-    nav a:hover{ color:var(--text); border-color: rgba(148,163,184,0.5); background: rgba(15,23,42,0.85); }
-    body[data-theme="light"] nav a:hover { background: rgba(209,213,219,0.4); }
+    .logo-text-main{ font-size:0.96rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; }
+    .logo-text-sub{ font-family: var(--font-mono); font-size:0.62rem; color:var(--muted); letter-spacing:0.05em; }
 
-    .nav-cta { border-color: rgba(56,189,248,0.7); color:var(--accent); box-shadow: 0 0 18px var(--card-glow-1); }
+    nav ul { display:flex; gap:0.3rem; list-style:none; font-size:0.82rem; align-items:center; }
+    nav a { padding:0.5rem 0.9rem; border-radius:999px; color:var(--muted); transition:all var(--transition-speed) ease; }
+    nav a:hover{ color:var(--text); background: rgba(255,255,255,0.06); }
+    body[data-theme="light"] nav a:hover { background: rgba(15,23,42,0.05); }
 
-    main { max-width:1140px; margin:0 auto; padding: 2.7rem 1.4rem 3.4rem; }
-    section { padding:4rem 0; position:relative; }
+    .nav-cta { border: 1px solid var(--border-strong); color:var(--text) !important; }
+    .nav-cta:hover { border-color: var(--blue); }
 
-    .section-eyebrow{ font-size:0.76rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--accent); margin-bottom:0.4rem; }
-    .section-title{ font-size:1.8rem; font-weight:600; margin-bottom:0.5rem; }
-    .section-subtitle{ font-size:0.96rem; color:var(--muted); max-width:620px; margin-bottom:2.1rem; }
+    main { max-width:1180px; margin:0 auto; padding: 3rem 1.6rem 3.6rem; }
+    section { padding:6.5rem 0; position:relative; }
 
-    /* Hero */
-    #hero{ display:grid; grid-template-columns: minmax(0,1.7fr) minmax(0,1.1fr); gap:2.4rem; padding-top:3.4rem; align-items:center; }
-    .badge-row { display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:1.4rem; }
-    .badge{ display:inline-flex; align-items:center; gap:0.4rem; border-radius:999px; border:1px solid var(--border-subtle); padding:0.25rem 0.7rem; font-size:0.72rem; background: rgba(15,23,42,0.9); color:var(--muted); backdrop-filter: blur(12px); }
-    body[data-theme="light"] .badge{ background: rgba(248,250,252,0.9); }
-    .badge-dot{ width:7px; height:7px; border-radius:999px; background: radial-gradient(circle at 30% 20%, var(--accent-3), #14532d); box-shadow:0 0 12px var(--accent-3); }
+    .section-eyebrow{
+      font-family: var(--font-mono); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.2em;
+      color:var(--gold); margin-bottom:0.9rem; font-weight:500;
+    }
+    .section-title{ font-weight:300; font-size:clamp(1.9rem, 3.4vw, 2.7rem); margin-bottom:0.7rem; letter-spacing:-0.01em; line-height:1.15; }
+    .section-title strong { font-weight:600; }
+    .section-subtitle{ font-size:1rem; color:var(--muted); max-width:640px; margin-bottom:3rem; line-height:1.7; }
 
-    .hero-title{ font-size:clamp(2.2rem,4vw,3.1rem); line-height:1.05; margin-bottom:0.9rem; }
-    .hero-highlight{ background: linear-gradient(to right, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
-    .hero-tagline{ font-size:0.97rem; color:var(--muted); max-width:600px; margin-bottom:1.7rem; }
-    .hero-actions{ display:flex; flex-wrap:wrap; gap:0.9rem; margin-bottom:1.7rem; }
+    /* ============ HERO ============ */
+    #hero{ padding-top:3.5rem; padding-bottom:2rem; text-align:center; display:flex; flex-direction:column; align-items:center; }
+    .badge{
+      display:inline-flex; align-items:center; gap:0.55rem; border-radius:999px; border:1px solid var(--border-strong);
+      padding:0.45rem 1.1rem; font-family: var(--font-mono); font-size:0.72rem; letter-spacing:0.04em;
+      background: var(--panel); color:var(--muted); backdrop-filter: blur(12px); margin-bottom:2.2rem;
+    }
+    .badge-dot{ width:6px; height:6px; border-radius:999px; background: var(--green); box-shadow:0 0 10px var(--green); animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; border-radius:999px; border:1px solid transparent; padding:0.7rem 1.4rem; font-size:0.86rem; cursor:pointer; transition:all var(--transition-speed) ease; background:transparent; color:var(--text); }
-    .btn-primary{ background: radial-gradient(circle at 0 0, var(--accent), var(--accent-2)); box-shadow:0 18px 40px var(--card-glow-1); }
-    .btn-primary:hover{ transform:translateY(-1px) scale(1.02); box-shadow:0 22px 55px var(--card-glow-1); }
-    .btn-ghost{ border-color: var(--border-subtle); color:var(--muted); background: rgba(15,23,42,0.7); }
-    body[data-theme="light"] .btn-ghost{ background: rgba(255,255,255,0.9); }
-    .btn-ghost:hover{ border-color:var(--accent); color:var(--text); }
+    .hero-title{ font-weight:300; font-size:clamp(2.6rem,6vw,4.6rem); line-height:1.06; margin-bottom:1.4rem; letter-spacing:-0.02em; max-width:900px; }
+    .hero-title strong { font-weight:600; }
+    .hero-highlight{ background: linear-gradient(100deg, var(--gold), var(--blue) 60%, var(--violet)); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600; }
+    .hero-tagline{ font-size:1.08rem; color:var(--muted); max-width:600px; margin: 0 auto 2.6rem; line-height:1.7; }
 
-    .hero-meta{ display:flex; flex-wrap:wrap; gap:1.6rem; font-size:0.8rem; color:var(--muted); }
-    .hero-meta strong{ display:block; color:var(--text); margin-bottom:0.15rem; }
+    .hero-actions{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-bottom:3.6rem; }
 
-    /* hero right card */
-    .hero-orbit-card{ position:relative; border-radius:26px; padding:1.6rem 1.5rem 1.4rem; background: linear-gradient(145deg, rgba(15,23,42,0.97), rgba(15,23,42,0.9)); border:1px solid var(--border-subtle); box-shadow:var(--shadow-soft); overflow:hidden; }
-    body[data-theme="light"] .hero-orbit-card { background: linear-gradient(145deg, #ffffff, #e0f2fe); }
-    .hero-orbit-card::before{ content:""; position:absolute; inset:-40%; background: radial-gradient(circle at 0% 0%, var(--card-glow-1), transparent 55%), radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%); opacity:0.45; pointer-events:none; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;
+      letter-spacing:0.02em; border: 1px solid transparent; border-radius:999px;
+      padding:0.85rem 1.9rem; font-size:0.88rem; cursor:pointer; font-weight:500;
+      transition:all var(--transition-speed) ease; background:transparent; color:var(--text);
+    }
+    .btn-primary{ background: linear-gradient(100deg, var(--gold), var(--blue)); color:#04050a; font-weight:600; box-shadow: var(--glow-blue); }
+    .btn-primary:hover{ transform:translateY(-2px); box-shadow: 0 0 46px rgba(91,141,239,0.4); }
+    .btn-ghost{ border: 1px solid var(--border-strong); color:var(--muted); background: var(--panel); backdrop-filter: blur(10px); }
+    .btn-ghost:hover{ border-color:var(--text); color:var(--text); transform:translateY(-2px); }
 
-    .avatar-ring{ width:130px; height:130px; border-radius:999px; margin:0 auto; border:2px solid rgba(148,163,184,0.7); display:grid; place-items:center; position:relative; overflow:hidden; background: radial-gradient(circle at 30% 10%, rgba(248,250,252,0.85), transparent 60%), radial-gradient(circle at 80% 80%, rgba(56,189,248,0.45), transparent 55%); }
-    .avatar-ring::after{ content:""; position:absolute; width:150%; height:150%; border-radius:inherit; border:1px dashed rgba(148,163,184,0.6); animation: slow-spin 26s linear infinite; }
-    @keyframes slow-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .avatar-initials{ position:relative; z-index:1; font-size:2.4rem; font-weight:700; letter-spacing:0.06em; color:#0b1120; }
-    .hero-orbit-caption{ text-align:center; font-size:0.84rem; color:var(--muted); }
-    .hero-orbit-caption strong{ display:block; color:var(--text); font-size:0.92rem; margin-bottom:0.2rem; }
-    .hero-orbit-tags{ display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; margin-top:0.4rem; }
-    .tag-chip{ border-radius:999px; border:1px solid var(--border-subtle); padding:0.2rem 0.6rem; font-size:0.7rem; background: rgba(15,23,42,0.9); color:var(--muted); }
-    body[data-theme="light"] .tag-chip{ background: rgba(255,255,255,0.95); }
-    .hero-orbit-stats{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:0.8rem; margin-top:0.7rem; font-size:0.76rem; }
-    .orbit-stat{ border-radius:14px; border:1px solid var(--border-subtle); background: rgba(15,23,42,0.9); padding:0.55rem; text-align:center; }
-    body[data-theme="light"] .orbit-stat{ background: rgba(255,255,255,0.95); }
-    .orbit-stat span{ display:block; color:var(--muted); } .orbit-stat strong{ display:block; margin-top:0.15rem; color:var(--text); }
+    .hero-stats{ display:flex; flex-wrap:wrap; justify-content:center; gap:0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding: 1.6rem 0; width:100%; max-width:760px; }
+    .hero-stat { flex:1; min-width:150px; padding: 0 1.5rem; position:relative; }
+    .hero-stat:not(:last-child)::after { content:""; position:absolute; right:0; top:10%; bottom:10%; width:1px; background: var(--border); }
+    .hero-stat span { display:block; font-family: var(--font-mono); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:0.4rem; }
+    .hero-stat strong { display:block; font-size:1.15rem; font-weight:500; }
 
-    /* grid / cards */
-    .grid-2{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:1.8rem; }
-    .grid-3{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:1.6rem; }
-    .card{ position:relative; border-radius:var(--radius-lg); border:1px solid var(--border-subtle); background:var(--bg-elevated); padding:1.25rem 1.3rem; box-shadow:var(--shadow-soft); overflow:hidden; font-size:0.86rem; color:var(--muted); transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease, background var(--transition-speed) ease; }
-    .card::before{ content:""; position:absolute; inset:-40%; background: radial-gradient(circle at 0 0, var(--card-glow-1), transparent 55%), radial-gradient(circle at 100% 100%, var(--card-glow-2), transparent 55%); opacity:0.35; pointer-events:none; }
-    .card:hover{ transform:translateY(-3px); box-shadow:0 24px 60px rgba(15,23,42,0.9); border-color: rgba(148,163,184,0.55); }
-    .card-title{ position:relative; font-size:0.98rem; font-weight:600; color:var(--text); margin-bottom:0.35rem; }
-    .card-meta{ position:relative; font-size:0.78rem; color:var(--muted); margin-bottom:0.45rem; }
-    .pill-row{ position:relative; display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.55rem; }
-    .pill{ border-radius:999px; border:1px solid rgba(148,163,184,0.6); padding:0.2rem 0.6rem; font-size:0.72rem; background: rgba(15,23,42,0.9); color:var(--muted); }
-    body[data-theme="light"] .pill{ background: rgba(255,255,255,0.95); }
+    /* ============ GRID / CARDS ============ */
+    .grid-2{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:1.6rem; }
+    .grid-3{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:1.4rem; }
 
-    /* SaudAI Chat */
+    .card{
+      position:relative; border-radius: var(--radius); border:1px solid var(--border); background:var(--panel);
+      backdrop-filter: blur(16px); padding:1.6rem 1.6rem; overflow:hidden; font-size:0.9rem; color:var(--muted);
+      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+    .card:hover{ transform:translateY(-4px); box-shadow: 0 30px 60px rgba(0,0,0,0.35), var(--glow-blue); border-color: var(--border-strong); }
+
+    .card-title{ font-size:1.08rem; font-weight:600; color:var(--text); margin-bottom:0.4rem; letter-spacing:-0.005em; }
+    .card-meta{ font-family: var(--font-mono); font-size:0.68rem; color:var(--gold); margin-bottom:0.7rem; text-transform:uppercase; letter-spacing:0.06em; }
+    .pill-row{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.8rem; }
+    .pill{ border-radius:999px; border:1px solid var(--border); padding:0.28rem 0.75rem; font-size:0.72rem; background: rgba(255,255,255,0.03); color:var(--muted); }
+
+    /* ============ SAUDAI CHAT ============ */
     #saudai .grid-2{ align-items:flex-start; }
-    .chat-panel{ position:relative; border-radius:var(--radius-lg); border:1px solid var(--border-subtle); background:var(--bg-elevated); box-shadow:var(--shadow-soft); display:flex; flex-direction:column; min-height:320px; overflow:hidden; }
-    .chat-header{ padding:0.85rem 1rem; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:space-between; gap:0.6rem; font-size:0.8rem; }
-    .chat-header-left{ display:flex; align-items:center; gap:0.6rem; }
-    .chat-avatar-mini{ width:30px; height:30px; border-radius:999px; border:1px solid rgba(56,189,248,0.8); background: radial-gradient(circle at 30% 20%, var(--accent), var(--bg)); display:grid; place-items:center; font-size:0.8rem; font-weight:600; color:#e0f2fe; }
-    .chat-status{ font-size:0.74rem; color:var(--muted); }
-    .chat-dot-online{ display:inline-block; width:7px; height:7px; border-radius:999px; background:var(--accent-3); box-shadow:0 0 10px var(--accent-3); margin-right:0.3rem; }
+    .chat-panel{
+      position:relative; border-radius: var(--radius); border:1px solid var(--border); background:var(--panel);
+      backdrop-filter: blur(20px); display:flex; flex-direction:column; min-height:360px; overflow:hidden;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.4);
+    }
 
-    .chat-body{ flex:1; padding:0.8rem 0.9rem; display:flex; flex-direction:column; gap:0.55rem; font-size:0.8rem; overflow-y:auto; scroll-behavior:smooth; }
-    .chat-message{ max-width:88%; padding:0.46rem 0.7rem; border-radius:14px; line-height:1.4; position:relative; word-break:break-word; }
-    .chat-message.user{ align-self:flex-end; background: rgba(56,189,248,0.22); border-bottom-right-radius:4px; color:var(--text); }
-    .chat-message.assistant{ align-self:flex-start; background: rgba(15,23,42,0.92); border:1px solid var(--border-subtle); border-bottom-left-radius:4px; color:var(--muted); }
-    body[data-theme="light"] .chat-message.assistant{ background: rgba(255,255,255,0.96); color:var(--text); }
+    .chat-header{ padding:1rem 1.2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:0.6rem; font-size:0.8rem; }
+    .chat-header-left{ display:flex; align-items:center; gap:0.7rem; }
+    .chat-avatar-mini{ width:32px; height:32px; border-radius:999px; background: linear-gradient(135deg, var(--gold), var(--blue)); display:grid; place-items:center; font-size:0.85rem; font-weight:700; color:#04050a; }
+    .chat-status{ font-family: var(--font-mono); font-size:0.68rem; color:var(--muted); }
+    .chat-dot-online{ display:inline-block; width:6px; height:6px; border-radius:999px; background:var(--green); box-shadow:0 0 8px var(--green); margin-right:0.4rem; animation: pulse-dot 2s ease-in-out infinite; }
 
-    .chat-input-bar{ padding:0.7rem 0.8rem; border-top:1px solid var(--border-subtle); display:flex; gap:0.55rem; align-items:center; }
-    .chat-input-bar input{ flex:1; border-radius:999px; border:1px solid rgba(148,163,184,0.7); padding:0.5rem 0.85rem; font-size:0.8rem; background: rgba(15,23,42,0.96); color:var(--text); outline:none; }
-    body[data-theme="light"] .chat-input-bar input{ background:#f9fafb; }
-    .chat-input-bar input::placeholder{ color: rgba(148,163,184,0.9); }
-    .chat-input-bar button{ border-radius:999px; border:none; padding:0.5rem 0.9rem; font-size:0.78rem; cursor:pointer; background: linear-gradient(to right, var(--accent), var(--accent-2)); color:#e0f2fe; white-space:nowrap; }
-    .chat-input-bar button:disabled{ opacity:0.6; cursor:default; transform:none; }
+    .chat-body{ flex:1; padding:1.1rem 1.2rem; display:flex; flex-direction:column; gap:0.7rem; font-size:0.86rem; overflow-y:auto; scroll-behavior:smooth; }
+    .chat-message{ max-width:88%; padding:0.6rem 0.9rem; border-radius:14px; line-height:1.55; position:relative; word-break:break-word; }
+    .chat-message.user{ align-self:flex-end; background: linear-gradient(100deg, rgba(232,192,115,0.18), rgba(91,141,239,0.18)); border:1px solid var(--border); border-bottom-right-radius:4px; color:var(--text); }
+    .chat-message.assistant{ align-self:flex-start; background: rgba(255,255,255,0.04); border:1px solid var(--border); border-bottom-left-radius:4px; color:var(--muted); }
 
-    .chat-hint{ font-size:0.76rem; color:var(--muted); margin-top:0.7rem; }
+    .chat-input-bar{ padding:0.9rem 1rem; border-top:1px solid var(--border); display:flex; gap:0.6rem; align-items:center; }
+    .chat-input-bar input{
+      flex:1; border-radius:999px; border:1px solid var(--border); padding:0.6rem 1rem; font-size:0.86rem;
+      background: rgba(255,255,255,0.03); color:var(--text); outline:none; transition: border-color var(--transition-speed) ease;
+    }
+    .chat-input-bar input:focus { border-color: var(--blue); box-shadow: var(--glow-blue); }
+    .chat-input-bar input::placeholder{ color: var(--muted); }
+    .chat-input-bar button{
+      border-radius:999px; border:none; padding:0.6rem 1.2rem; font-size:0.8rem; cursor:pointer;
+      background: linear-gradient(100deg, var(--gold), var(--blue)); color:#04050a; font-weight:600; white-space:nowrap; transition: transform var(--transition-speed) ease;
+    }
+    .chat-input-bar button:hover:not(:disabled) { transform: translateY(-1px); }
+    .chat-input-bar button:disabled{ opacity:0.5; cursor:default; transform:none; }
 
-    .status-line { font-size:0.82rem; color:var(--muted); display:flex; gap:0.6rem; align-items:center; }
+    .chat-hint{ font-size:0.8rem; color:var(--muted); margin-top:1rem; line-height:1.7; }
+    .status-line { font-family: var(--font-mono); font-size:0.72rem; color:var(--muted); display:flex; gap:0.6rem; align-items:center; }
 
-    /* Contact */
-    .contact-grid{ display:grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap:1.8rem; }
-    .contact-card, .contact-form{ border-radius:var(--radius-lg); border:1px solid var(--border-subtle); background:var(--bg-elevated); padding:1.4rem 1.5rem; box-shadow:var(--shadow-soft); font-size:0.86rem; color:var(--muted); }
+    /* ============ CONTACT ============ */
+    .contact-grid{ display:grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap:1.6rem; }
+    .contact-card, .contact-form{ border-radius: var(--radius); border:1px solid var(--border); background:var(--panel); backdrop-filter: blur(16px); padding:1.8rem 1.8rem; font-size:0.9rem; color:var(--muted); }
 
-    label{ display:block; font-size:0.78rem; margin-bottom:0.2rem; color:var(--muted); }
-    input[type="text"], input[type="email"], textarea { width:100%; border-radius:12px; border:1px solid rgba(148,163,184,0.7); padding:0.48rem 0.75rem; font-size:0.82rem; background: rgba(15,23,42,0.96); color:var(--text); outline:none; }
-    body[data-theme="light"] input[type="text"], body[data-theme="light"] input[type="email"], body[data-theme="light"] textarea { background:#f9fafb; }
-    textarea { min-height:120px; resize:vertical; }
-    input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.9); }
+    .form-row { margin-bottom: 1rem; }
+    label{ display:block; font-family: var(--font-mono); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.4rem; color:var(--gold); }
+    input[type="text"], input[type="email"], textarea {
+      width:100%; border-radius:10px; border:1px solid var(--border); padding:0.65rem 0.9rem; font-size:0.88rem;
+      font-family: var(--font-body); background: rgba(255,255,255,0.03); color:var(--text); outline:none; transition: border-color var(--transition-speed) ease;
+    }
+    input:focus, textarea:focus { border-color: var(--blue); box-shadow: var(--glow-blue); }
+    textarea { min-height:130px; resize:vertical; }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
 
-    footer { max-width:1140px; margin:0 auto; padding:1.7rem 1.4rem 2.4rem; font-size:0.78rem; color:var(--muted); border-top:1px solid rgba(31,41,55,0.7); display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+    .contact-links { display:flex; flex-direction:column; gap:0.7rem; margin-top:0.9rem; font-size:0.88rem; }
+    .contact-links a { color: var(--text); border-bottom: 1px solid transparent; width: fit-content; transition: all var(--transition-speed) ease; }
+    .contact-links a:hover { color: var(--blue); border-color: var(--blue); }
 
-    .theme-toggle{ position:fixed; right:1.4rem; bottom:1.6rem; z-index:60; }
-    .theme-toggle button{ border-radius:999px; border:1px solid var(--border-subtle); padding:0.45rem 0.8rem; font-size:0.8rem; display:inline-flex; align-items:center; gap:0.35rem; cursor:pointer; background:var(--bg-elevated); color:var(--muted); box-shadow:0 14px 30px rgba(15,23,42,0.8); transition:all var(--transition-speed) ease; }
-    .theme-toggle button:hover{ transform:translateY(-1px); border-color:var(--accent); color:var(--text); }
-    .theme-toggle-icon{ font-size:0.9rem; }
+    footer {
+      max-width:1180px; margin:0 auto; padding:2rem 1.6rem 2.8rem; font-size:0.78rem;
+      color:var(--muted); border-top:1px solid var(--border); display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+    }
 
-    /* Connection indicator */
-    .conn-ok { color: var(--accent-3); }
-    .conn-bad { color: #f97316; }
+    .theme-toggle{ position:fixed; right:1.6rem; bottom:1.8rem; z-index:60; }
+    .theme-toggle button{
+      border-radius:999px; border:1px solid var(--border-strong); padding:0.55rem 1rem; font-size:0.8rem;
+      display:inline-flex; align-items:center; gap:0.45rem; cursor:pointer; background:var(--panel); color:var(--muted);
+      box-shadow:0 16px 34px rgba(0,0,0,0.4); transition:all var(--transition-speed) ease; backdrop-filter: blur(14px);
+    }
+    .theme-toggle button:hover{ transform:translateY(-2px); border-color:var(--blue); color:var(--text); }
 
-    /* Responsive */
+    .conn-ok { color: var(--green); }
+    .conn-bad { color: var(--gold); }
+
+    /* ---- scroll reveal ---- */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(.16,.84,.44,1), transform 0.8s cubic-bezier(.16,.84,.44,1); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .reveal-item { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-item.in-view { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+      .reveal, .reveal-item { opacity: 1; transform: none; }
+    }
+
+    /* ============ RESPONSIVE ============ */
     @media (max-width: 900px) {
-      #hero, .grid-2, .contact-grid { grid-template-columns: minmax(0,1fr); }
-      .hero-orbit-stats { grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .nav-inner { flex-direction:column; justify-content:center; height:auto; padding:0.6rem 1.4rem 0.9rem; gap:0.5rem; }
+      .grid-2, .contact-grid { grid-template-columns: minmax(0,1fr); }
+      .nav-inner { flex-direction:column; justify-content:center; height:auto; padding:0.8rem 1.6rem 1rem; gap:0.6rem; }
       nav ul { flex-wrap:wrap; justify-content:center; }
+      .hero-stats { flex-direction: column; gap:1rem; }
+      .hero-stat:not(:last-child)::after { display:none; }
     }
     @media (max-width: 700px) {
       .grid-3 { grid-template-columns: minmax(0,1fr); }
-      section { padding:3.2rem 0; }
+      section { padding:4rem 0; }
       .theme-toggle { right:1rem; bottom:1rem; }
     }
   </style>
 </head>
 
 <body data-theme="dark">
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="nebula nebula-1" aria-hidden="true"></div>
+  <div class="nebula nebula-2" aria-hidden="true"></div>
+  <div class="nebula nebula-3" aria-hidden="true"></div>
+  <div class="shooting-star shoot-1" aria-hidden="true"></div>
+  <div class="shooting-star shoot-2" aria-hidden="true"></div>
+  <div class="shooting-star shoot-3" aria-hidden="true"></div>
+
   <!-- THEME TOGGLE -->
   <div class="theme-toggle" aria-hidden="false">
     <button id="theme-toggle-btn" type="button" aria-pressed="false" aria-label="Toggle theme">
-      <span class="theme-toggle-icon" id="theme-icon">🌙</span>
-      <span id="theme-label">Dark mode</span>
+      <span id="theme-icon">🌙</span>
+      <span id="theme-label">Dark</span>
     </button>
   </div>
 
@@ -226,7 +380,7 @@
         <div class="logo-orbit" aria-hidden="true"></div>
         <div>
           <div class="logo-text-main">SAUD REHMAN</div>
-          <div class="logo-text-sub">Aerospace · Defence · Renewables · AI</div>
+          <div class="logo-text-sub">AEROSPACE · DEFENCE · RENEWABLES · AI</div>
         </div>
       </div>
       <nav aria-label="Main navigation">
@@ -246,105 +400,67 @@
   <main>
     <!-- HERO -->
     <section id="hero">
-      <div>
-        <div class="badge-row">
-          <div class="badge">
-            <span class="badge-dot" aria-hidden="true"></span>
-            Open to aerospace, defence & renewable collaborations
-          </div>
-          <div class="badge">Technical Marketing · Renewable Energy · IoT & AI Products</div>
-        </div>
-
-        <h1 class="hero-title">
-          Hi, I’m <span class="hero-highlight">Saud&nbsp;Rehman</span>.<br />
-          I connect <span class="hero-highlight">engineering, AI & markets</span>.
-        </h1>
-
-        <p class="hero-tagline">
-          Aerospace & Defence Engineering · Renewable Electrical Engineering · Technical Marketing & Product Development.
-          I translate complex systems into clear solutions for customers and partners.
-        </p>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">View Resume</a>
-          <a class="btn btn-ghost" href="#saudai">Talk with SaudAI</a>
-        </div>
-
-        <div class="hero-meta">
-          <div>
-            <strong>Technical Marketing Manager</strong>
-            NASTP · National Aerospace Science & Technology Park
-          </div>
-          <div>
-            <strong>Experience</strong>
-            Solar & C&I projects · IoT & AI products · Sales engineering
-          </div>
-          <div>
-            <strong>Location</strong>
-            Islamabad, Pakistan
-          </div>
-        </div>
+      <div class="badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        Open to aerospace, defence & renewable collaborations
       </div>
 
-      <div>
-        <div class="hero-orbit-card" role="img" aria-label="Avatar and summary card">
-          <div class="hero-orbit-inner">
-            <div class="avatar-ring">
-              <div class="avatar-initials">SR</div>
-            </div>
-            <div class="hero-orbit-caption">
-              <strong>Aerospace · Defence · Renewables</strong>
-              Technical marketing, energy engineering and product strategy combined.
-              <div class="hero-orbit-tags" aria-hidden="true">
-                <span class="tag-chip">Aerospace & Defence</span>
-                <span class="tag-chip">Renewable Energy</span>
-                <span class="tag-chip">IoT & AI</span>
-                <span class="tag-chip">Technical Sales</span>
-              </div>
-            </div>
-            <div class="hero-orbit-stats" aria-hidden="true">
-              <div class="orbit-stat">
-                <span>Domains</span>
-                <strong>Aero · Energy</strong>
-              </div>
-              <div class="orbit-stat">
-                <span>Focus</span>
-                <strong>Products & GTM</strong>
-              </div>
-              <div class="orbit-stat">
-                <span>Experience</span>
-                <strong>4+ years</strong>
-              </div>
-            </div>
-          </div>
+      <h1 class="hero-title">
+        Hi, I'm <span class="hero-highlight">Saud Rehman</span>.<br />
+        I connect <strong>engineering, AI & markets</strong>.
+      </h1>
+
+      <p class="hero-tagline">
+        Aerospace & Defence Engineering · Renewable Electrical Engineering · Technical Marketing & Product Development.
+        I translate complex systems into clear solutions for customers and partners.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">View Resume</a>
+        <a class="btn btn-ghost" href="#saudai">Talk with SaudAI</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span>Role</span>
+          <strong>Technical Marketing Manager</strong>
+        </div>
+        <div class="hero-stat">
+          <span>Focus</span>
+          <strong>Solar · IoT & AI · Sales Engineering</strong>
+        </div>
+        <div class="hero-stat">
+          <span>Based In</span>
+          <strong>Islamabad, Pakistan</strong>
         </div>
       </div>
     </section>
 
     <!-- ABOUT -->
-    <section id="about">
+    <section id="about" class="reveal">
+      <div class="scenery bg-planet parallax" data-speed="0.08" aria-hidden="true"></div>
       <div class="section-eyebrow">About</div>
-      <h2 class="section-title">From solar roofs to space-oriented ecosystems</h2>
+      <h2 class="section-title">From solar roofs to <strong>space-oriented ecosystems</strong></h2>
       <p class="section-subtitle">
         I started in electrical and renewable energy engineering, building and supporting solar and C&I projects.
         That journey evolved into IoT & AI products and now technical marketing for aerospace and defence systems.
       </p>
 
       <div class="grid-2">
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Who I am</div>
           <div class="card-meta">Engineer · Product mind · Storyteller</div>
           <p>
-            I’m comfortable in both the lab and the boardroom — understanding how systems and data work, then
+            I'm comfortable in both the lab and the boardroom — understanding how systems and data work, then
             communicating that clearly to stakeholders, partners and customers.
           </p>
-          <p style="margin-top:0.6rem;">
+          <p style="margin-top:0.7rem;">
             I enjoy turning requirements into products, and products into narratives that resonate:
             aligning engineering constraints with market reality.
           </p>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">What I work with</div>
           <div class="card-meta">Tools & domains</div>
           <p>
@@ -362,113 +478,122 @@
     </section>
 
     <!-- EXPERIENCE -->
-    <section id="experience">
+    <section id="experience" class="reveal">
+      <div class="scenery bg-orbit-ring parallax" data-speed="-0.06" aria-hidden="true"><span class="orbit-dot"></span></div>
       <div class="section-eyebrow">Experience</div>
-      <h2 class="section-title">Roles that shaped my thinking</h2>
+      <h2 class="section-title">Roles that <strong>shaped my thinking</strong></h2>
       <p class="section-subtitle">
         A blend of hands-on engineering, product development, sales and technical marketing
         across energy, IoT and aerospace ecosystems.
       </p>
 
-      <div class="section-panel">
-        <div class="grid-3">
-          <div class="card">
-            <div class="card-title">Technical Marketing Manager</div>
-            <div class="card-meta">NASTP · 2024 – Present</div>
-            <p>
-              Crafting narratives around aerospace & defence technologies, supporting ecosystem growth and
-              engaging stakeholders with clear, technically accurate messaging.
-            </p>
-            <div class="pill-row">
-              <span class="pill">Aerospace</span>
-              <span class="pill">Defence</span>
-              <span class="pill">Marketing</span>
-            </div>
+      <div class="grid-3">
+        <div class="card reveal-item">
+          <div class="card-title">Technical Marketing Manager</div>
+          <div class="card-meta">NASTP · 2024 – Present</div>
+          <p>
+            Crafting narratives around aerospace & defence technologies, supporting ecosystem growth and
+            engaging stakeholders with clear, technically accurate messaging.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Aerospace</span>
+            <span class="pill">Defence</span>
+            <span class="pill">Marketing</span>
           </div>
+        </div>
 
-          <div class="card">
-            <div class="card-title">Lead Project Engineer</div>
-            <div class="card-meta">Renergy Solutions · 2024</div>
-            <p>
-              Led multi-megawatt renewable implementations, aligning design, execution and CRM-based workflows
-              for commercial & industrial clients.
-            </p>
-            <div class="pill-row">
-              <span class="pill">Renewables</span>
-              <span class="pill">C&I Solar</span>
-              <span class="pill">Jira & CRM</span>
-            </div>
+        <div class="card reveal-item">
+          <div class="card-title">Lead Project Engineer</div>
+          <div class="card-meta">Renergy Solutions · 2024</div>
+          <p>
+            Led multi-megawatt renewable implementations, aligning design, execution and CRM-based workflows
+            for commercial & industrial clients.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Renewables</span>
+            <span class="pill">C&I Solar</span>
+            <span class="pill">Jira & CRM</span>
           </div>
+        </div>
 
-          <div class="card">
-            <div class="card-title">Product Dev & BDO</div>
-            <div class="card-meta">Rapidev · 2023–2024</div>
-            <p>
-              Combined sales engineering with process optimization using Salesforce and structured BoQs,
-              consistently meeting and exceeding targets.
-            </p>
-            <div class="pill-row">
-              <span class="pill">Sales Engineering</span>
-              <span class="pill">Salesforce</span>
-              <span class="pill">Business Dev</span>
-            </div>
+        <div class="card reveal-item">
+          <div class="card-title">Product Dev & BDO</div>
+          <div class="card-meta">Rapidev · 2023–2024</div>
+          <p>
+            Combined sales engineering with process optimization using Salesforce and structured BoQs,
+            consistently meeting and exceeding targets.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Sales Engineering</span>
+            <span class="pill">Salesforce</span>
+            <span class="pill">Business Dev</span>
           </div>
+        </div>
 
-          <div class="card">
-            <div class="card-title">Product Development Manager</div>
-            <div class="card-meta">Spacedome · 2023</div>
-            <p>
-              Guided AI & IoT product development, defining features, workflows and go-to-market strategies
-              to increase adoption and streamline operations.
-            </p>
-            <div class="pill-row">
-              <span class="pill">IoT</span>
-              <span class="pill">AI</span>
-              <span class="pill">Product Dev</span>
-            </div>
+        <div class="card reveal-item">
+          <div class="card-title">Product Development Manager</div>
+          <div class="card-meta">Spacedome · 2023</div>
+          <p>
+            Guided AI & IoT product development, defining features, workflows and go-to-market strategies
+            to increase adoption and streamline operations.
+          </p>
+          <div class="pill-row">
+            <span class="pill">IoT</span>
+            <span class="pill">AI</span>
+            <span class="pill">Product Dev</span>
           </div>
+        </div>
 
-          <div class="card">
-            <div class="card-title">Assistant Manager (Solar)</div>
-            <div class="card-meta">SkyElectric · 2020–2023</div>
-            <p>
-              Designed and sold tailored solar solutions, using Salesforce, Jira and detailed BoQs to align
-              engineering and commercial requirements.
-            </p>
-            <div class="pill-row">
-              <span class="pill">Solar PV</span>
-              <span class="pill">Technical Sales</span>
-              <span class="pill">Customer Success</span>
-            </div>
+        <div class="card reveal-item">
+          <div class="card-title">Assistant Manager (Solar)</div>
+          <div class="card-meta">SkyElectric · 2020–2023</div>
+          <p>
+            Designed and sold tailored solar solutions, using Salesforce, Jira and detailed BoQs to align
+            engineering and commercial requirements.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Solar PV</span>
+            <span class="pill">Technical Sales</span>
+            <span class="pill">Customer Success</span>
           </div>
+        </div>
 
-          <div class="card">
-            <div class="card-title">Education</div>
-            <div class="card-meta">COMSATS University</div>
-            <p>
-              MEng Renewable Electrical Engineering · BE Electrical & Electronics.
-              Final year project in wind speed forecasting using Bi-LSTM and Bi-GRU.
-            </p>
-            <div class="pill-row">
-              <span class="pill">Renewable Electrical Engineering</span>
-              <span class="pill">Electrical & Electronics</span>
-              <span class="pill">ML for Energy</span>
-            </div>
+        <div class="card reveal-item">
+          <div class="card-title">Education</div>
+          <div class="card-meta">COMSATS University</div>
+          <p>
+            MEng Renewable Electrical Engineering · BE Electrical & Electronics.
+            Final year project in wind speed forecasting using Bi-LSTM and Bi-GRU.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Renewable Electrical Engineering</span>
+            <span class="pill">Electrical & Electronics</span>
+            <span class="pill">ML for Energy</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- PROJECTS -->
-    <section id="projects">
+    <section id="projects" class="reveal">
+      <div class="scenery bg-rocket parallax" data-speed="0.1" aria-hidden="true">
+        <span class="drift-inner">
+          <svg viewBox="0 0 48 48" width="46" height="46" fill="none">
+            <path d="M24 4c7 6 9 15 9 22 0 4-2 7-9 7s-9-3-9-7c0-7 2-16 9-22z" fill="rgba(232,192,115,0.5)" stroke="rgba(232,192,115,0.7)" stroke-width="1"/>
+            <circle cx="24" cy="18" r="3.4" fill="rgba(4,5,10,0.5)" stroke="rgba(255,255,255,0.5)"/>
+            <path d="M15 26l-5 8 8-3M33 26l5 8-8-3" stroke="rgba(91,141,239,0.6)" stroke-width="1.2"/>
+            <path d="M24 33c-1.5 4-1.5 7 0 10 1.5-3 1.5-6 0-10z" fill="rgba(91,141,239,0.55)"/>
+          </svg>
+        </span>
+      </div>
       <div class="section-eyebrow">Projects</div>
-      <h2 class="section-title">Selected work & systems</h2>
+      <h2 class="section-title">Selected work & <strong>systems</strong></h2>
       <p class="section-subtitle">
         A snapshot of projects that combine engineering depth with usability, scalability and clear outcomes.
       </p>
 
       <div class="grid-3">
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Multi-MW C&I Solar Portfolios</div>
           <div class="card-meta">Renergy Solutions / SkyElectric</div>
           <p>
@@ -482,7 +607,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">IoT Monitoring & Control Platform</div>
           <div class="card-meta">Spacedome</div>
           <p>
@@ -496,7 +621,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Aerospace & Defence Narratives</div>
           <div class="card-meta">NASTP</div>
           <p>
@@ -510,7 +635,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Wind Speed Forecasting FYP</div>
           <div class="card-meta">Academic · ML</div>
           <p>
@@ -527,56 +652,66 @@
     </section>
 
     <!-- CERTIFICATES -->
-    <section id="certificates">
+    <section id="certificates" class="reveal">
       <div class="section-eyebrow">Certificates</div>
-      <h2 class="section-title">Continuous learning & upskilling</h2>
+      <h2 class="section-title">Continuous <strong>learning & upskilling</strong></h2>
       <p class="section-subtitle">
         Verified credentials that complement my engineering background with project management, data,
         digital marketing and AI-enhanced workflows.
       </p>
 
       <div class="grid-3">
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Foundations of Project Management</div>
           <div class="card-meta">Coursera</div>
           <p>Core project planning, execution and stakeholder communication skills.</p>
-          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/2531594ffb1426329db07647d88997b5" target="_blank" rel="noopener">View certificate →</a></p>
+          <p style="margin-top:0.5rem;"><a href="https://coursera.org/share/2531594ffb1426329db07647d88997b5" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Excel Skills for Business</div>
           <div class="card-meta">Coursera</div>
           <p>Practical Excel skills for analysis, dashboards and decision support in projects and sales.</p>
-          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/1cd03e814f56f6e035ed964b8240f07a" target="_blank" rel="noopener">View certificate →</a></p>
+          <p style="margin-top:0.5rem;"><a href="https://coursera.org/share/1cd03e814f56f6e035ed964b8240f07a" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Microsoft Copilot Essentials</div>
           <div class="card-meta">Coursera</div>
           <p>Using Copilot and AI tools to accelerate documentation, analysis and reporting.</p>
-          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/a1a2d7d752979d200851db6be77ea61b" target="_blank" rel="noopener">View certificate →</a></p>
+          <p style="margin-top:0.5rem;"><a href="https://coursera.org/share/a1a2d7d752979d200851db6be77ea61b" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Digital Marketing & E-commerce</div>
           <div class="card-meta">Coursera</div>
           <p>Understanding funnels, positioning and campaign strategies that now support technical marketing.</p>
-          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/3f1f8227cd709d202f87f035fc4ee0ce" target="_blank" rel="noopener">View certificate →</a></p>
+          <p style="margin-top:0.5rem;"><a href="https://coursera.org/share/3f1f8227cd709d202f87f035fc4ee0ce" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
 
-        <div class="card">
+        <div class="card reveal-item">
           <div class="card-title">Marketing Benefits vs. Features</div>
           <div class="card-meta">Coursera</div>
           <p>Translating engineering features into outcomes that matter to decision-makers.</p>
-          <p style="margin-top:0.4rem;"><a href="https://coursera.org/share/42a49734b8a84ec0a9a1c6f65a76c83f" target="_blank" rel="noopener">View certificate →</a></p>
+          <p style="margin-top:0.5rem;"><a href="https://coursera.org/share/42a49734b8a84ec0a9a1c6f65a76c83f" target="_blank" rel="noopener">View certificate →</a></p>
         </div>
       </div>
     </section>
 
     <!-- SAUDAI CHAT -->
-    <section id="saudai">
+    <section id="saudai" class="reveal">
+      <div class="scenery bg-satellite parallax" data-speed="-0.09" aria-hidden="true">
+        <span class="drift-inner">
+          <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
+            <rect x="19" y="19" width="10" height="10" rx="1.5" fill="rgba(155,123,255,0.5)" stroke="rgba(155,123,255,0.8)"/>
+            <rect x="2" y="21" width="14" height="6" rx="1" fill="rgba(91,141,239,0.35)" stroke="rgba(91,141,239,0.6)"/>
+            <rect x="32" y="21" width="14" height="6" rx="1" fill="rgba(91,141,239,0.35)" stroke="rgba(91,141,239,0.6)"/>
+            <line x1="24" y1="19" x2="24" y2="10" stroke="rgba(232,192,115,0.6)" stroke-width="1"/>
+          </svg>
+        </span>
+      </div>
       <div class="section-eyebrow">SaudAI</div>
-      <h2 class="section-title">Talk with my AI twin</h2>
+      <h2 class="section-title">Talk with <strong>my AI twin</strong></h2>
       <p class="section-subtitle">
         Ask SaudAI about my experience, projects or perspectives on renewables, aerospace, IoT, AI tools and career choices.
         Answers are generated by an AI model but grounded in my real background.
@@ -588,7 +723,7 @@
             <div class="chat-header-left">
               <div class="chat-avatar-mini" aria-hidden="true">SR</div>
               <div>
-                <div style="font-size:0.8rem;font-weight:500;">SaudAI</div>
+                <div style="font-size:0.86rem; font-weight:600;">SaudAI</div>
                 <div class="chat-status" id="saudai-connection"><span class="chat-dot-online"></span>Online · Powered by SaudAI (DeepSeek)</div>
               </div>
             </div>
@@ -597,7 +732,7 @@
 
           <div class="chat-body" id="chat-body" tabindex="0">
             <div class="chat-message assistant" role="status">
-              Salam! I’m SaudAI — an AI version of Saud. Ask me about my experience, projects, tools I use, or career advice in engineering, renewables, IoT and technical marketing.
+              Salam! I'm SaudAI — an AI version of Saud. Ask me about my experience, projects, tools I use, or career advice in engineering, renewables, IoT and technical marketing.
             </div>
           </div>
 
@@ -608,17 +743,17 @@
         </div>
 
         <div>
-          <div class="card">
+          <div class="card reveal-item">
             <div class="card-title">What you can ask me</div>
             <div class="card-meta">Examples</div>
             <p>Try questions like:</p>
-            <ul style="margin-top:0.4rem; padding-left:1.1rem; font-size:0.82rem;">
-              <li>“How did you move from solar to aerospace & defence?”</li>
-              <li>“What tools do you recommend for managing engineering projects?”</li>
-              <li>“Explain your wind forecasting final year project.”</li>
-              <li>“How would you approach a C&I solar client?”</li>
+            <ul style="margin-top:0.5rem; padding-left:1.1rem; font-size:0.86rem;">
+              <li>"How did you move from solar to aerospace & defence?"</li>
+              <li>"What tools do you recommend for managing engineering projects?"</li>
+              <li>"Explain your wind forecasting final year project."</li>
+              <li>"How would you approach a C&I solar client?"</li>
             </ul>
-            <p style="margin-top:0.7rem;">I’ll respond as if I’m Saud, in first person, keeping answers practical and honest.</p>
+            <p style="margin-top:0.8rem;">I'll respond as if I'm Saud, in first person, keeping answers practical and honest.</p>
           </div>
           <p class="chat-hint">Note: This demo connects to your local SaudAI backend (DeepSeek). If you host the backend remotely, update the endpoint below accordingly.</p>
         </div>
@@ -626,11 +761,14 @@
     </section>
 
     <!-- CONTACT -->
-    <section id="contact">
+    <section id="contact" class="reveal">
+      <div class="scenery bg-radar parallax" data-speed="0.05" aria-hidden="true">
+        <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+      </div>
       <div class="section-eyebrow">Contact</div>
-      <h2 class="section-title">Let’s build something meaningful</h2>
+      <h2 class="section-title">Let's build something <strong>meaningful</strong></h2>
       <p class="section-subtitle">
-        Reach out if you’d like to collaborate on aerospace & defence, renewable energy, IoT & AI products,
+        Reach out if you'd like to collaborate on aerospace & defence, renewable energy, IoT & AI products,
         or technical marketing strategies.
       </p>
 
@@ -668,17 +806,14 @@
 
   <footer>
     <div>© <span id="year"></span> Saud Rehman. All rights reserved.</div>
-    <div>Designed with an Apple-inspired minimal theme & powered by SaudAI (DeepSeek).</div>
+    <div>Powered by SaudAI (DeepSeek)</div>
   </footer>
 
   <script>
     // ====== Configuration ======
-    // When testing locally use http://localhost:3000
-    // If you deploy the backend to Render or elsewhere, replace this URL with your public API.
     const SAUDAI_API_URL = "http://localhost:3000/api/saudai";
-    const CONNECTION_CHECK_URL = "http://localhost:3000/"; // used for quick health-check
+    const CONNECTION_CHECK_URL = "http://localhost:3000/";
 
-    // ====== UI elements ======
     document.getElementById("year").textContent = new Date().getFullYear();
     const bodyEl = document.body;
     const themeBtn = document.getElementById("theme-toggle-btn");
@@ -688,24 +823,204 @@
     function applyTheme(theme) {
       bodyEl.setAttribute("data-theme", theme);
       themeBtn.setAttribute("aria-pressed", theme === "light");
-      if (theme === "light") {
-        themeIcon.textContent = "☀️";
-        themeLabel.textContent = "Light mode";
-      } else {
-        themeIcon.textContent = "🌙";
-        themeLabel.textContent = "Dark mode";
-      }
+      themeIcon.textContent = theme === "light" ? "☀️" : "🌙";
+      themeLabel.textContent = theme === "light" ? "Light" : "Dark";
     }
-
     const storedTheme = localStorage.getItem("saud-theme");
     applyTheme(storedTheme === "light" ? "light" : "dark");
-
     themeBtn.addEventListener("click", () => {
       const current = bodyEl.getAttribute("data-theme") || "dark";
       const next = current === "dark" ? "light" : "dark";
       applyTheme(next);
       localStorage.setItem("saud-theme", next);
     });
+
+    // ====== Animated starfield ======
+    const canvas = document.getElementById("starfield");
+    const ctx = canvas.getContext("2d");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = window.matchMedia("(pointer: fine)").matches;
+    let stars = [];
+    let w, h;
+
+    function resizeCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      const count = Math.floor((w * h) / 16000);
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 0.8 + 0.3,
+        baseAlpha: Math.random() * 0.45 + 0.15,
+        speed: Math.random() * 0.4 + 0.05,
+        phase: Math.random() * Math.PI * 2,
+      }));
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    // ---- mouse-reactive chase stars: dart to the cursor, flash, spring back ----
+    const mouse = { x: -9999, y: -9999, active: false };
+    const CHASE_COUNT = 4;
+    const chasers = Array.from({ length: CHASE_COUNT }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      homeX: 0, homeY: 0,
+      state: "idle",
+      stateSince: performance.now(),
+      driftPhase: Math.random() * Math.PI * 2,
+    }));
+    chasers.forEach((c) => { c.homeX = c.x; c.homeY = c.y; });
+    const bursts = [];
+
+    if (canHover && !reduceMotion) {
+      window.addEventListener("mousemove", (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        mouse.active = true;
+      });
+      window.addEventListener("mouseleave", () => { mouse.active = false; });
+
+      function triggerChase() {
+        const idleOnes = chasers.filter((c) => c.state === "idle");
+        if (mouse.active && idleOnes.length) {
+          const c = idleOnes[Math.floor(Math.random() * idleOnes.length)];
+          c.state = "chase";
+          c.stateSince = performance.now();
+        }
+        setTimeout(triggerChase, 1600 + Math.random() * 1800);
+      }
+      setTimeout(triggerChase, 1200);
+    }
+
+    function updateChasers(now) {
+      chasers.forEach((c) => {
+        if (c.state === "chase") {
+          const elapsed = now - c.stateSince;
+          c.x += (mouse.x - c.x) * 0.14;
+          c.y += (mouse.y - c.y) * 0.14;
+          const dist = Math.hypot(mouse.x - c.x, mouse.y - c.y);
+          if (dist < 26 || elapsed > 850) {
+            c.state = "strike";
+            c.stateSince = now;
+            bursts.push({ x: c.x, y: c.y, start: now, duration: 420 });
+          }
+        } else if (c.state === "strike") {
+          if (now - c.stateSince > 130) {
+            c.homeX = Math.random() * w;
+            c.homeY = Math.random() * h;
+            c.state = "return";
+            c.stateSince = now;
+          }
+        } else if (c.state === "return") {
+          c.x += (c.homeX - c.x) * 0.055;
+          c.y += (c.homeY - c.y) * 0.055;
+          if (Math.hypot(c.homeX - c.x, c.homeY - c.y) < 3) {
+            c.state = "idle";
+            c.stateSince = now;
+          }
+        } else {
+          // idle: gentle drift around home
+          c.x = c.homeX + Math.sin(now * 0.0006 + c.driftPhase) * 6;
+          c.y = c.homeY + Math.cos(now * 0.0005 + c.driftPhase) * 6;
+        }
+      });
+    }
+
+    let t = 0;
+    function drawStars(now) {
+      ctx.clearRect(0, 0, w, h);
+
+      // ambient twinkling stars
+      stars.forEach((s) => {
+        const twinkle = reduceMotion ? s.baseAlpha : s.baseAlpha + Math.sin(t * s.speed + s.phase) * 0.2;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${Math.max(0, Math.min(1, twinkle))})`;
+        ctx.fill();
+      });
+
+      if (canHover && !reduceMotion) {
+        updateChasers(now || 0);
+
+        // strike bursts: quick faint expanding ring, then gone
+        for (let i = bursts.length - 1; i >= 0; i--) {
+          const b = bursts[i];
+          const p = ((now || 0) - b.start) / b.duration;
+          if (p >= 1) { bursts.splice(i, 1); continue; }
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, 2 + p * 16, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(232,192,115,${0.35 * (1 - p)})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        // chase stars themselves: small, slightly brighter than ambient
+        chasers.forEach((c) => {
+          const isActive = c.state === "chase" || c.state === "strike";
+          const r = isActive ? 1.6 : 1.1;
+          const a = isActive ? 0.9 : 0.5;
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${a})`;
+          ctx.shadowBlur = isActive ? 8 : 3;
+          ctx.shadowColor = "rgba(232,192,115,0.8)";
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        });
+      }
+
+      t += 0.02;
+      if (!reduceMotion) requestAnimationFrame(drawStars);
+    }
+    drawStars(performance.now());
+
+    // ====== Scroll reveal (sections + staggered cards + background scenery) ======
+    const revealEls = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            const items = entry.target.querySelectorAll(".reveal-item");
+            items.forEach((item, i) => {
+              setTimeout(() => item.classList.add("in-view"), i * 90);
+            });
+            const scenery = entry.target.querySelectorAll(".scenery");
+            scenery.forEach((s) => s.classList.add("in-view"));
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      revealEls.forEach((el) => io.observe(el));
+    } else {
+      revealEls.forEach((el) => {
+        el.classList.add("in-view");
+        el.querySelectorAll(".reveal-item, .scenery").forEach(i => i.classList.add("in-view"));
+      });
+    }
+
+    // ====== Scroll-linked parallax for background scenery ======
+    const parallaxEls = Array.from(document.querySelectorAll(".parallax"));
+    let ticking = false;
+    function updateParallax() {
+      const y = window.scrollY;
+      parallaxEls.forEach((el) => {
+        const speed = parseFloat(el.dataset.speed) || 0;
+        el.style.transform = `translate3d(0, ${(-y * speed).toFixed(1)}px, 0)`;
+      });
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking && !reduceMotion) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }
+    if (!reduceMotion) {
+      window.addEventListener("scroll", onScroll, { passive: true });
+      updateParallax();
+    }
 
     // ====== SaudAI Chat logic ======
     const chatBody = document.getElementById("chat-body");
@@ -714,7 +1029,6 @@
     const statusLine = document.getElementById("status-line");
     const saudaiConnection = document.getElementById("saudai-connection");
 
-    // small helper to create messages
     function appendMessage(role, text) {
       const div = document.createElement("div");
       div.className = "chat-message " + (role === "user" ? "user" : "assistant");
@@ -730,13 +1044,12 @@
         statusLine.textContent = "Connected to local SaudAI";
         statusLine.className = "status-line conn-ok";
       } else {
-        saudaiConnection.innerHTML = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f97316;margin-right:6px;"></span>Backend unreachable';
+        saudaiConnection.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:6px;"></span>Backend unreachable';
         statusLine.textContent = "SaudAI backend is not connected or unreachable.";
         statusLine.className = "status-line conn-bad";
       }
     }
 
-    // quick health check on load
     async function checkBackend() {
       try {
         const res = await fetch(CONNECTION_CHECK_URL, { method: "GET", cache: "no-store", mode: "cors" });
@@ -746,7 +1059,6 @@
       return false;
     }
 
-    // call backend with timeout
     async function postWithTimeout(url, body, timeout = 20000) {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), timeout);
@@ -768,17 +1080,11 @@
     async function sendMessage() {
       const text = chatInput.value.trim();
       if (!text) return;
-
-      // UI: add user message
       appendMessage("user", text);
       chatInput.value = "";
       chatInput.disabled = true;
       chatSend.disabled = true;
-
-      // add thinking placeholder
       const thinking = appendMessage("assistant", "SaudAI is thinking...");
-
-      // ensure backend is reachable
       const backendOk = await checkBackend();
       if (!backendOk) {
         thinking.textContent = "Error: SaudAI backend is not connected yet or unavailable.";
@@ -786,7 +1092,6 @@
         chatSend.disabled = false;
         return;
       }
-
       try {
         const res = await postWithTimeout(SAUDAI_API_URL, { message: text }, 25000);
         if (!res.ok) {
@@ -794,16 +1099,12 @@
           thinking.textContent = `Model server error (${res.status})${txt ? ": " + txt : ""}`;
         } else {
           const data = await res.json().catch(() => null);
-          const reply = data?.reply ?? "I couldn’t generate a response right now. Try again.";
+          const reply = data?.reply ?? "I couldn't generate a response right now. Try again.";
           thinking.textContent = reply;
         }
       } catch (err) {
         console.error("Chat error:", err);
-        if (err.name === "AbortError") {
-          thinking.textContent = "Request timed out. Try again.";
-        } else {
-          thinking.textContent = "Error: SaudAI backend is not connected yet or unavailable.";
-        }
+        thinking.textContent = err.name === "AbortError" ? "Request timed out. Try again." : "Error: SaudAI backend is not connected yet or unavailable.";
       } finally {
         chatInput.disabled = false;
         chatSend.disabled = false;
@@ -814,25 +1115,11 @@
 
     chatSend.addEventListener("click", sendMessage);
     chatInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
 
-    // initial backend check
-    (async () => {
-      await checkBackend();
-    })();
+    (async () => { await checkBackend(); })();
 
-    // Accessibility: focus chat body when new messages appended (keeps screenreader happy)
-    const observer = new MutationObserver(() => {
-      // keep focus on chat input normally; if user isn't typing, move focus briefly
-      // (This is minimal and avoids unexpected focus jumps.)
-    });
-    observer.observe(chatBody, { childList: true });
-
-    // Allow linking to chat via URL: auto-scroll if #saudai present
     if (location.hash === "#saudai") {
       document.querySelector("#saudai")?.scrollIntoView();
     }
