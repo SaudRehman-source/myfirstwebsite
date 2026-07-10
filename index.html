@@ -156,11 +156,31 @@
     @keyframes radar-ping { 0% { transform: scale(0.3); opacity: 0.7; } 100% { transform: scale(1); opacity: 0; } }
 
     @media (prefers-reduced-motion: reduce) {
-      .shooting-star, .bg-rocket, .bg-satellite, .orbit-dot, .bg-radar .ring { animation: none !important; }
+      .shooting-star, .bg-rocket, .bg-satellite, .orbit-dot, .bg-radar .ring, .bg-turbine .blades, .bg-jet .drift-inner, .bg-chip .pulse-dot { animation: none !important; }
     }
     @media (max-width: 900px) {
-      .bg-planet, .bg-orbit-ring, .bg-rocket, .bg-satellite, .bg-radar { display: none; }
+      .bg-planet, .bg-orbit-ring, .bg-rocket, .bg-satellite, .bg-radar,
+      .bg-turbine, .bg-solar, .bg-jet, .bg-chip { display: none; }
     }
+
+    /* ---- renewables: wind turbine ---- */
+    .bg-turbine { top: 12%; right: 6%; width: 120px; height: 220px; }
+    .bg-turbine .blades { transform-origin: 60px 46px; animation: turbine-spin 7s linear infinite; }
+    @keyframes turbine-spin { to { transform: rotate(360deg); } }
+
+    /* ---- renewables: solar panel array ---- */
+    .bg-solar { bottom: 6%; left: 4%; width: 150px; height: 100px; animation: solar-tilt 10s ease-in-out infinite; }
+    @keyframes solar-tilt { 0%,100% { transform: perspective(400px) rotateX(0deg); } 50% { transform: perspective(400px) rotateX(4deg); } }
+
+    /* ---- defence: aircraft silhouette + radar sweep (outline only, no weapon detail) ---- */
+    .bg-jet { top: 14%; left: 8%; width: 130px; height: 90px; }
+    .bg-jet .drift-inner { display:block; animation: jet-drift 18s ease-in-out infinite; }
+    @keyframes jet-drift { 0%,100% { transform: translate(0,0); } 50% { transform: translate(36px, -18px); } }
+
+    /* ---- product development: chip / circuit board ---- */
+    .bg-chip { bottom: 10%; right: 8%; width: 90px; height: 90px; }
+    .bg-chip .pulse-dot { animation: chip-pulse 2.2s ease-in-out infinite; transform-origin: center; }
+    @keyframes chip-pulse { 0%,100% { opacity: 0.35; r: 2.2; } 50% { opacity: 1; r: 3.4; } }
 
     a { color: inherit; text-decoration: none; }
     ::selection { background: var(--blue); color: #fff; }
@@ -480,6 +500,38 @@
     <!-- EXPERIENCE -->
     <section id="experience" class="reveal">
       <div class="scenery bg-orbit-ring parallax" data-speed="-0.06" aria-hidden="true"><span class="orbit-dot"></span></div>
+
+      <div class="scenery bg-turbine parallax" data-speed="0.07" aria-hidden="true">
+        <svg viewBox="0 0 120 220" width="110" height="200" fill="none">
+          <line x1="60" y1="46" x2="60" y2="210" stroke="rgba(232,192,115,0.4)" stroke-width="4"/>
+          <circle cx="60" cy="46" r="4" fill="rgba(232,192,115,0.6)"/>
+          <g class="blades">
+            <path d="M60 46 L60 6 Q66 20 60 46Z" fill="rgba(155,123,255,0.35)"/>
+            <path d="M60 46 L94 66 Q78 62 60 46Z" fill="rgba(91,141,239,0.35)"/>
+            <path d="M60 46 L26 66 Q42 62 60 46Z" fill="rgba(91,141,239,0.35)"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="scenery bg-solar parallax" data-speed="-0.05" aria-hidden="true">
+        <svg viewBox="0 0 150 100" width="140" height="94" fill="none">
+          <g stroke="rgba(79,209,165,0.45)" stroke-width="1">
+            <rect x="4" y="10" width="66" height="36" fill="rgba(91,141,239,0.14)"/>
+            <rect x="78" y="10" width="66" height="36" fill="rgba(91,141,239,0.14)"/>
+            <rect x="4" y="52" width="66" height="36" fill="rgba(91,141,239,0.14)"/>
+            <rect x="78" y="52" width="66" height="36" fill="rgba(91,141,239,0.14)"/>
+            <line x1="4" y1="28" x2="70" y2="28"/>
+            <line x1="37" y1="10" x2="37" y2="46"/>
+            <line x1="78" y1="28" x2="144" y2="28"/>
+            <line x1="111" y1="10" x2="111" y2="46"/>
+            <line x1="4" y1="70" x2="70" y2="70"/>
+            <line x1="37" y1="52" x2="37" y2="88"/>
+            <line x1="78" y1="70" x2="144" y2="70"/>
+            <line x1="111" y1="52" x2="111" y2="88"/>
+          </g>
+        </svg>
+      </div>
+
       <div class="section-eyebrow">Experience</div>
       <h2 class="section-title">Roles that <strong>shaped my thinking</strong></h2>
       <p class="section-subtitle">
@@ -586,6 +638,39 @@
           </svg>
         </span>
       </div>
+
+      <div class="scenery bg-jet parallax" data-speed="-0.08" aria-hidden="true">
+        <span class="drift-inner">
+          <svg viewBox="0 0 130 90" width="120" height="84" fill="none">
+            <path d="M10 45 L70 40 L110 30 L120 34 L112 42 L80 48 L120 56 L110 60 L70 50 L10 47Z"
+                  fill="rgba(91,141,239,0.28)" stroke="rgba(91,141,239,0.55)" stroke-width="1"/>
+            <path d="M55 44 L48 62 L58 58Z" fill="rgba(91,141,239,0.25)" stroke="rgba(91,141,239,0.5)" stroke-width="1"/>
+            <circle cx="16" cy="46" r="34" fill="none" stroke="rgba(232,192,115,0.18)" stroke-dasharray="3 5"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="scenery bg-chip parallax" data-speed="0.06" aria-hidden="true">
+        <svg viewBox="0 0 90 90" width="86" height="86" fill="none">
+          <rect x="26" y="26" width="38" height="38" rx="3" fill="rgba(155,123,255,0.18)" stroke="rgba(155,123,255,0.5)" stroke-width="1"/>
+          <g stroke="rgba(155,123,255,0.4)" stroke-width="1">
+            <line x1="10" y1="34" x2="26" y2="34"/>
+            <line x1="10" y1="45" x2="26" y2="45"/>
+            <line x1="10" y1="56" x2="26" y2="56"/>
+            <line x1="64" y1="34" x2="80" y2="34"/>
+            <line x1="64" y1="45" x2="80" y2="45"/>
+            <line x1="64" y1="56" x2="80" y2="56"/>
+            <line x1="34" y1="10" x2="34" y2="26"/>
+            <line x1="45" y1="10" x2="45" y2="26"/>
+            <line x1="56" y1="10" x2="56" y2="26"/>
+            <line x1="34" y1="64" x2="34" y2="80"/>
+            <line x1="45" y1="64" x2="45" y2="80"/>
+            <line x1="56" y1="64" x2="56" y2="80"/>
+          </g>
+          <circle class="pulse-dot" cx="45" cy="45" r="2.6" fill="rgba(79,209,165,0.9)"/>
+        </svg>
+      </div>
+
       <div class="section-eyebrow">Projects</div>
       <h2 class="section-title">Selected work & <strong>systems</strong></h2>
       <p class="section-subtitle">
@@ -669,7 +754,7 @@
         </div>
 
         <div class="card reveal-item">
-          <div class="card-title">Foundations of Project Managements</div>
+          <div class="card-title">Excel Skills for Business</div>
           <div class="card-meta">Coursera</div>
           <p>Practical Excel skills for analysis, dashboards and decision support in projects and sales.</p>
           <p style="margin-top:0.5rem;"><a href="https://www.coursera.org/account/accomplishments/verify/1P9XNDKPSVMJ" target="_blank" rel="noopener">View certificate →</a></p>
@@ -794,7 +879,7 @@
           <div class="card-meta">Stay connected</div>
           <p>You can reach me or follow my work here:</p>
           <div class="contact-links">
-            <a href="mailto:saudrehman585@icloud.com">saudrehman585@yahoo.com</a>
+            <a href="mailto:saudrehman585@yahoo.com">saudrehman585@yahoo.com</a>
             <a href="tel:+923340007283">+92 334 000 7283</a>
             <a href="https://www.linkedin.com/in/saud-rehman585" target="_blank" rel="noreferrer">LinkedIn · /saud-rehman585</a>
             <a href="https://github.com/SaudRehman-source" target="_blank" rel="noreferrer">GitHub · @SaudRehman-source</a>
